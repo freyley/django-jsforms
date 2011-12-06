@@ -24,5 +24,12 @@ class SingleModelSelect(forms.TextInput):
             "aw_search_%s_%s" % (self.model._meta.app_label, 
                                  self.model.__name__)
             )
+        new_attrs['data-target-id'] = new_attrs['id']
+        new_attrs['id'] = new_attrs['id'] + '_visible'
 
-        return super(SingleModelSelect, self).render(name, value, new_attrs)
+        visible = super(SingleModelSelect, self).render(name+"_visible", value, new_attrs)
+        hidden_attrs = attrs.copy()
+        hidden_attrs['type'] = 'hidden'
+        hidden = super(SingleModelSelect, self).render(name, value, hidden_attrs)
+        return visible + hidden
+
