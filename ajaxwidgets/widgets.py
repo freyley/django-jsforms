@@ -18,7 +18,7 @@ class SingleModelSelect(forms.TextInput):
         css = new_attrs.get('class', '')
         if css:
             css += ' '
-        css += 'ajax_widget_singleselect ajax_widget'
+        css += self.get_css_class()
         new_attrs['class'] = css
         new_attrs['data-sourceurl'] = reverse(
             "aw_search_%s_%s" % (self.model._meta.app_label, 
@@ -32,4 +32,16 @@ class SingleModelSelect(forms.TextInput):
         hidden_attrs['type'] = 'hidden'
         hidden = super(SingleModelSelect, self).render(name, value, hidden_attrs)
         return visible + hidden
+
+    def get_css_class(self):
+        return "ajax_widget_singleselect ajax_widget"
+
+class MultiModelSelect(SingleModelSelect):
+    def render(self, name, value, attrs=None):
+        html = super(MultiModelSelect, self).render(name, value, attrs)
+        html += '<ul class="itemlist" id="%s_itemlist">blah blah blah</ul>' % attrs['id']
+        return html
+
+    def get_css_class(self):
+        return "ajax_widget_multiselect ajax_widget"
 
