@@ -1,6 +1,7 @@
 from django import forms
 from django.core.urlresolvers import reverse
-#from django.utils.safestring import mark_safe
+from django.utils.safestring import mark_safe
+
 
 class SingleModelSelect(forms.TextInput):
     """ 
@@ -38,9 +39,11 @@ class SingleModelSelect(forms.TextInput):
 
 class MultiModelSelect(SingleModelSelect):
     def render(self, name, value, attrs=None):
-        html = super(MultiModelSelect, self).render(name, value, attrs)
-        html += '<ul class="itemlist" id="%s_itemlist">blah blah blah</ul>' % attrs['id']
-        return html
+        if not attrs or 'id' not in attrs:
+            raise Exception("Cannot instantiate MultiModelSelect without an id")
+        html = [super(MultiModelSelect, self).render(name, value, attrs)]
+        html.append('<ul class="itemlist" id="%s_itemlist"></ul>' % attrs['id'])
+        return mark_safe(u'\n'.join(html))
 
     def get_css_class(self):
         return "ajax_widget_multiselect ajax_widget"
