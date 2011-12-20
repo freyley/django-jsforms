@@ -5,7 +5,7 @@ from .views import search
 urllist = []
 
 try:
-    for model_name, search_field in settings.AJAX_WIDGETS_MODELS:
+    for model_name, search_field in settings.JSWIDGETS_MODELS:
         model = get_model(*model_name.split('.'))
         urllist.append(url(
             r'%s/%s/$' % (model._meta.app_label, model.__name__),

@@ -17,7 +17,7 @@ INSTALLATION INSTRUCTIONS
 ---- in settings.py... ----
 
 # add the following
-AJAX_WIDGETS_MODELS = (
+JSWIDGETS_MODELS = (
     ("some_app.SomeModel", "some_field"),
     ("pages.Page", "title"),
 )
