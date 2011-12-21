@@ -1,5 +1,5 @@
 define( ["./multi_model_select"], function(MMS) {
-    // we're assuming jquery and jqueryUI exist - they could be loaded.
+    // we're assuming jquery and jqueryUI exist - they SHOULD be loaded.
 
     function create_singleselect(elem) {
         $(elem).autocomplete({

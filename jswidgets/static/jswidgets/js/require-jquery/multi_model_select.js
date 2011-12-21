@@ -1,9 +1,6 @@
 define([
-    "requireplugins/text!templates/autocomplete_with_list_default.tmpl",
-    "jqueryui"
-], function(DefaultTmpl) {
-
-console.log("it's getting loaded successfully!");
+    "./resig_micro_templating"
+], function() {
 
 
 function source_override (itemlist, request, response) {
@@ -30,13 +27,34 @@ function delete_item(itemlist, delete_link) {
 
 
 function render_list(itemlist) {
-    console.log("rendering list");
+    console.group("render_list");
     console.log(itemlist.list_item_tmpl_id);
 
-    itemlist.display_list.html(tmpl(
-            itemlist.list_item_tmpl_id,
-            {itemlist: itemlist}
-    ));
+    var html = "",
+        ids = "";
+
+    $.each(itemlist.items, function(_, item) {
+        html += tmpl(itemlist.list_item_tmpl_id, item);
+        ids += item.id + ",";
+    });
+
+    itemlist.display_list.html(html);
+    itemlist.hidden_input.val(ids.substring(0, ids.length-1));
+
+    console.groupEnd();
+};
+
+
+function override_display_item_template(itemlist) {
+    itemlist.input.data("autocomplete")._renderItem = function(ul, item) {
+        return $( "<li></li>" )
+            .data( "item.autocomplete", item )
+            .append(
+                "<a>"
+                + tmpl(itemlist.dropdown_item_tmpl_id, item)
+                + "</a>")
+            .appendTo( ul );
+    };
 };
 
 
@@ -80,8 +98,10 @@ function Itemlist(_, input) {
 
     // Functions
     that.add_item_to_list = function(item) {
+        console.log("adding", item);
         that.items[item.id] = item;
         that.render_list();
+        console.log("items", that.items);
     };
 
     that.add_items_to_list = function(items) {
@@ -104,6 +124,10 @@ function Itemlist(_, input) {
     };
 
     jqueryui_autocomplete(that);
+
+    // use dropdown_item template if it exists.
+    if(Boolean($("#"+that.dropdown_item_tmpl_id).length))
+        override_display_item_template(that);
 
     console.groupEnd();
 };

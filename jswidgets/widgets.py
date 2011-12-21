@@ -44,7 +44,8 @@ class MultiModelSelect(SingleModelSelect):
 
     def __init__(self, model, *args, **kwargs):
         self.list_item_template = "jswidgets/multimodelselect/list_item.js.tmpl"
-        self.dropdown_template = "jswidgets/multimodelselect/dropdown_item.js.tmpl"
+        self.dropdown_item_template = None
+
         for my_kwarg in ("list_item_template", "dropdown_item_template"):
             if my_kwarg in kwargs:
                 setattr(self, my_kwarg, kwargs.pop(my_kwarg))
@@ -65,11 +66,12 @@ class MultiModelSelect(SingleModelSelect):
                 %(attrs['id'], js_tmpl.render(empty))
         )
 
-        js_tmpl = loader.get_template(self.dropdown_template)
-        html.append(
-                '<script type="text/template" id="%s_dropdown_item_template">%s</script>'
-                %(attrs['id'], js_tmpl.render(empty))
-        )
+        if self.dropdown_item_template:
+            js_tmpl = loader.get_template(self.dropdown_item_template)
+            html.append(
+                    '<script type="text/template" id="%s_dropdown_item_template">%s</script>'
+                    %(attrs['id'], js_tmpl.render(empty))
+            )
 
         return mark_safe(u'\n'.join(html))
 
