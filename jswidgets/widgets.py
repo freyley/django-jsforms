@@ -38,7 +38,7 @@ class SingleModelSelect(forms.TextInput):
         return visible + hidden
 
     def get_css_class(self):
-        return "ajax_widget_singleselect ajax_widget"
+        return "jswidget-singleselect"
 
 class MultiModelSelect(SingleModelSelect):
 
@@ -74,5 +74,5 @@ class MultiModelSelect(SingleModelSelect):
         return mark_safe(u'\n'.join(html))
 
     def get_css_class(self):
-        return "ajax_widget_multiselect ajax_widget"
+        return "jswidget-multiselect"
 

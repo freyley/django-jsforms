@@ -25,7 +25,7 @@ define( [], function() {
     $(function() {
         console.log("setting up the stuff");
 
-        $.each($('.ajax_widget_singleselect'), function(_, elem) {
+        $.each($('.jswidget-singleselect'), function(_, elem) {
             create_singleselect(elem);
         });
         $.each($('.jswidgets-opener'), function(_, elem) {

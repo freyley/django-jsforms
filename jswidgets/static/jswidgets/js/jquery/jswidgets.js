@@ -1,5 +1,5 @@
 $( function() {
-    $.each($('.ajax_widget_singleselect'), function(idx, elem) {
+    $.each($('.jswidget-singleselect'), function(idx, elem) {
         $( "#" + $(elem).attr('id') ).autocomplete({
 			source: $(elem).attr("data-sourceurl"),
 			minLength: 2,
