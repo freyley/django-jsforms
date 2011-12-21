@@ -1,6 +1,9 @@
 from django import forms
 from django.core.urlresolvers import reverse
+from django.template import loader, Context
 from django.utils.safestring import mark_safe
+
+empty = Context({})
 
 
 class SingleModelSelect(forms.TextInput):
@@ -38,11 +41,36 @@ class SingleModelSelect(forms.TextInput):
         return "ajax_widget_singleselect ajax_widget"
 
 class MultiModelSelect(SingleModelSelect):
+
+    def __init__(self, model, *args, **kwargs):
+        self.list_item_template = "jswidgets/multimodelselect/list_item.js.tmpl"
+        self.dropdown_template = "jswidgets/multimodelselect/dropdown_item.js.tmpl"
+        for my_kwarg in ("list_item_template", "dropdown_item_template"):
+            if my_kwarg in kwargs:
+                setattr(self, my_kwarg, kwargs.pop(my_kwarg))
+
+        super(MultiModelSelect, self).__init__(model, *args, **kwargs)
+
     def render(self, name, value, attrs=None):
         if not attrs or 'id' not in attrs:
             raise Exception("Cannot instantiate MultiModelSelect without an id")
-        html = [super(MultiModelSelect, self).render(name, value, attrs)]
+        html = []
+        html.append(super(MultiModelSelect, self).render(name, value, attrs))
         html.append('<ul class="itemlist" id="%s_itemlist"></ul>' % attrs['id'])
+
+        # js templates
+        js_tmpl = loader.get_template(self.list_item_template)
+        html.append(
+                '<script type="text/template" id="%s_list_item_template">%s</script>'
+                %(attrs['id'], js_tmpl.render(empty))
+        )
+
+        js_tmpl = loader.get_template(self.dropdown_template)
+        html.append(
+                '<script type="text/template" id="%s_dropdown_item_template">%s</script>'
+                %(attrs['id'], js_tmpl.render(empty))
+        )
+
         return mark_safe(u'\n'.join(html))
 
     def get_css_class(self):
