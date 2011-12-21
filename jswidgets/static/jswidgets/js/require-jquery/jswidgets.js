@@ -3,12 +3,21 @@ define( [], function() {
 
     function create_singleselect(elem) {
         $(elem).autocomplete({
-            source: $(elem).attr("data-sourceurl"),
+            source: $(elem).data("sourceurl"),
             minLength: 2,
             select: function( event, ui ) {
-                var target_id = $(elem).attr("data-target-id");
+                var target_id = $(elem).data("target-id");
                 $("#"+target_id).val(ui.item.id);
             }
+        });
+
+    };
+    function create_divopener(elem) {
+        var id = $(elem).data("opens");
+        $("#"+id).hide();
+        $(elem).click(function() {
+            $("#"+id).show();
+            return false;
         });
     };
 
@@ -18,6 +27,9 @@ define( [], function() {
 
         $.each($('.ajax_widget_singleselect'), function(_, elem) {
             create_singleselect(elem);
+        });
+        $.each($('.jswidgets-opener'), function(_, elem) {
+            create_divopener(elem);
         });
 
     });
