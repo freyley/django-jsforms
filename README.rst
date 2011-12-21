@@ -9,15 +9,15 @@ INSTALLATION INSTRUCTIONS
 
 ---- add this to urls.py ----
 
-    # django-ajaxwidgets
-    (r'^ajaxwidgets-api/', include('ajaxwidgets.urls')),
+    # django-jswidgets
+    (r'^jswidgets-api/', include('jswidgets.urls')),
 
 
 
 ---- in settings.py... ----
 
 # add the following
-AJAX_WIDGETS_MODELS = (
+JSWIDGETS_MODELS = (
     ("some_app.SomeModel", "some_field"),
     ("pages.Page", "title"),
 )
@@ -25,7 +25,7 @@ AJAX_WIDGETS_MODELS = (
 # make sure the following are in INSTALLED_APPS
 INSTALLED_APPS = [
     'django.contrib.staticfiles',
-    'ajaxwidgets',
+    'jswidgets',
 ]
 
 # notes on django-staticfiles
