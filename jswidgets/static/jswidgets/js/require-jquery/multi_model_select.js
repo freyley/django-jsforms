@@ -129,6 +129,13 @@ function Itemlist(_, input) {
     if(Boolean($("#"+that.dropdown_item_tmpl_id).length))
         override_display_item_template(that);
 
+    that.display_list.on("click", "a.jswidgets-remove", function() {
+        var id = $(this).closest("li").data("jswidgets-item-id");
+        delete that.items[id];
+        render_list(that);
+        return false;
+    });
+
     console.groupEnd();
 };
 
