@@ -1,4 +1,4 @@
-define( [], function() {
+define( ["./multi_model_select"], function(MMS) {
     // we're assuming jquery and jqueryUI exist - they could be loaded.
 
     function create_singleselect(elem) {
