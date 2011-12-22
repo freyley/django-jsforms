@@ -21,7 +21,7 @@ class Bar(models.Model):
 
     def __unicode__(self):
         n = self.name
-        n += " with foo: " % self.foo
+        n += " with foo: " + str(self.foo)
         n += " and %d bazes," % self.bazes.all().count()
         n += ",".join([str(baz) for baz in self.bazes.all()])
         return n
