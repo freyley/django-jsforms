@@ -12,7 +12,7 @@ function source_override (itemlist, request, response) {
 
     $.ajax({
         url: itemlist.url,
-        data: { q: term, exclude: exclude },
+        data: { term: term, exclude: exclude },
         dataType: "json",
         success: response
     });
