@@ -2,7 +2,7 @@ from django import forms
 from .widgets import MultiModelSelect
 
 
-class MultiModelField(forms.Field):
+class MultiModelField(forms.ModelMultipleChoiceField):
 
     def __init__(self, *args, **kwargs):
         if not 'model' in kwargs:
@@ -15,7 +15,7 @@ class MultiModelField(forms.Field):
         if not 'widget' in kwargs:
             kwargs['widget'] = MultiModelSelect(model, **widget_kwargs)
         self.model = model
-        super(MultiModelField, self).__init__(*args, **kwargs)
+        super(MultiModelField, self).__init__(*args, queryset=model.objects.all(),  **kwargs)
 
     def to_python(self, value):
         # this is where we turn the string into a list of ids
