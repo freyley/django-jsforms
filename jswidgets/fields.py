@@ -1,5 +1,17 @@
 from django import forms
-from .widgets import MultiModelSelect
+from .widgets import MultiModelSelect, SingleModelSelect
+
+class SingleModelField(forms.ModelChoiceField):
+    def __init__(self, *args, **kwargs):
+        if not 'model' in kwargs:
+            raise Exception("SingleModelField requires a model")
+        self.model = kwargs.pop("model")
+        if not "widget" in kwargs:
+            kwargs["widget"] = SingleModelSelect(self.model)
+        kwargs["queryset"] = self.model.objects.all()
+        super(SingleModelField, self).__init__(*args, **kwargs)
+
+
 
 
 class MultiModelField(forms.ModelMultipleChoiceField):
