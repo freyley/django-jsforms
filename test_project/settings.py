@@ -37,14 +37,15 @@ USE_I18N = True
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 import os
-MEDIA_ROOT = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'media')
+ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
+MEDIA_ROOT = os.path.join(ROOT_PATH, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
 MEDIA_URL = '/media/'
 
-STATIC_ROOT=os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static')
+STATIC_ROOT=os.path.join(ROOT_PATH, 'static')
 STATIC_URL = '/static/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
@@ -62,12 +63,15 @@ TEMPLATE_LOADERS = (
 #     'django.template.loaders.eggs.load_template_source',
 )
 
+STATICFILES_DIRS = ( os.path.join(ROOT_PATH, 'staticfiles'), )
+
 TEMPLATE_CONTEXT_PROCESSORS = (
      'django.core.context_processors.auth',
      'django.core.context_processors.debug',
      'django.core.context_processors.i18n',
      'django.core.context_processors.media',
      'django.core.context_processors.request',
+     'django.core.context_processors.static',
      'lib.context_processors.config',
 )
 MIDDLEWARE_CLASSES = (

@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html lang="en">
+
+<head>
+    {# meta #}
+    <meta charset="utf-8">
+    <meta name="author" content="Jeff Schwaber, Chris Pitzer, LoFi Art, LLC">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+    {# title #}
+    <title>Test project</title>
+
+    {# HTML5 shim, for IE6-8 support of HTML elements #}
+    <!--[if lt IE 9]>                               
+        <script type="text/javascript" src="{{STATIC_URL}}js/html5.js"></script>
+    <![endif]-->
+
+    {# styles #}
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/redmond/jquery-ui.css" type="text/css" media="screen" charset="utf-8"0>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}js/require.js"></script>
+    <script type="text/javascript">
+      require({{REQUIREJS_CONFIGS|safe}}, ["order!jqueryui"], function() {
+           console.log("jquery and jquery-ui");
+      });
+    </script>
+    <script type="text/javascript">
+      require({{REQUIREJS_CONFIGS|safe}}, ["jswidgets/require-jquery/jswidgets"], function() {
+            console.log("return from jswidgets load");
+      });
+    </script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+        <div id="content" class="content">
+          {% block content %}{% endblock %}
+        </div>
+</body>
+</html>
