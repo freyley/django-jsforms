@@ -2,6 +2,7 @@
 
 from lib.decorators import template
 from .forms import BarForm
+from .models import Bar
 
 @template("foo.html")
 def foo(request):
@@ -11,4 +12,7 @@ def foo(request):
             form.save()
     else:
         form = BarForm()
-    return dict(form = form)
+    return dict(
+        form = form,
+        bars = Bar.objects.all()
+        )

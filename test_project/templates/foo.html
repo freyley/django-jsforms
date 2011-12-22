@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
 {% block content %}
+<ul>
+{% for bar in bars %}
+<li>{{bar}}</li>
+{% endfor %}
+</ul>
+
 <form method="POST">
 {% csrf_token %}
 {{form}}

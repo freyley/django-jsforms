@@ -23,7 +23,7 @@ class Bar(models.Model):
         n = self.name
         n += " with foo: " % self.foo
         n += " and %d bazes," % self.bazes.all().count()
-        n += ",".join(self.bazes.all())
+        n += ",".join([str(baz) for baz in self.bazes.all()])
         return n
 
 
