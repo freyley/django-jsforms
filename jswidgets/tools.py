@@ -19,7 +19,7 @@ def idlist_to_models(ids, model):
             raise forms.ValidationError("id %d not found" % id)
     return model_objects
 
-def get_display_field(self, model):
+def get_display_field(model):
     searchstring = "%s.%s" % ( model._meta.app_label, model.__name__)
     try:
         for mod, field in settings.JSWIDGETS_MODELS:
