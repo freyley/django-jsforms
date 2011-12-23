@@ -77,7 +77,7 @@ function jqueryui_autocomplete(itemlist) {
 };
 
 
-function Itemlist(_, input) {
+var Itemlist = function(_, input) {
     console.group("new_autocomplete");
 
     // helpers
@@ -104,13 +104,6 @@ function Itemlist(_, input) {
         console.log("items", that.items);
     };
 
-    that.add_items_to_list = function(items) {
-        $.each(items, function(_, item) {
-            that.items[item.id] = item;
-        });
-        that.render_list();
-    };
-
     that.render_list = function() {
         render_list(that);
     };
@@ -135,6 +128,18 @@ function Itemlist(_, input) {
         render_list(that);
         return false;
     });
+
+    // add items from existing-data
+    var existing_data = that.display_list.data("existing-data");
+    if(existing_data) {
+        existing_data = decodeURIComponent(existing_data); // now json
+        existing_data = $.parseJSON(existing_data); // now an array
+
+        $.each(existing_data, function(_, item) {
+            that.items[item.id] = item;
+        });
+        that.render_list();
+    }
 
     console.groupEnd();
 };

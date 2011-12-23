@@ -5,6 +5,8 @@ from django.utils.safestring import mark_safe
 from .tools import idstring_to_list, idlist_to_models, get_display_field
 from django.utils import simplejson as sj
 
+import urllib
+
 empty = Context({})
 
 
@@ -72,7 +74,7 @@ class MultiModelSelect(SingleModelSelect):
             field_data = [ { 'label' : getattr(model, display_field),
                              'id' : model.id,
                              } for model in models ]
-            existing_data = 'data-existing-data="%s"'  % sj.dumps(field_data)
+            existing_data = "data-existing-data='%s'" % urllib.quote(sj.dumps(field_data))
         html.append('<ul class="itemlist" id="%s_itemlist" %s></ul>' % (attrs['id'], existing_data))
 
         # js templates
