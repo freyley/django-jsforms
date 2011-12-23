@@ -8,7 +8,6 @@ from .models import Bar
 def foo(request):
     if request.method == "POST":
         form = BarForm(request.POST)
-        import ipdb; ipdb.set_trace()
         if form.is_valid():
             form.save()
     else:
