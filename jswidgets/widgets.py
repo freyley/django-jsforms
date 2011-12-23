@@ -72,7 +72,7 @@ class MultiModelSelect(SingleModelSelect):
             field_data = [ { 'label' : getattr(model, display_field),
                              'id' : model.id,
                              } for model in models ]
-            existing_data = "data-existing-data=%s"  % sj.dumps(field_data)
+            existing_data = 'data-existing-data="%s"'  % sj.dumps(field_data)
         html.append('<ul class="itemlist" id="%s_itemlist" %s></ul>' % (attrs['id'], existing_data))
 
         # js templates
