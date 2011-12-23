@@ -40,7 +40,10 @@ class SingleModelSelect(forms.TextInput):
         return visible + hidden
 
     def visible_value(self, value):
-        return self.model.objects.get(pk=int(value))
+        if value:
+            return self.model.objects.get(pk=int(value))
+        else:
+            return ""
 
     def get_css_class(self):
         return "jswidget-singleselect"
