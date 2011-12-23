@@ -13,7 +13,10 @@ def search(request, **kwargs):
     form = SearchForm(request.GET)
 
     if form.is_valid():
-        objs = model.objects.filter(**{search_field+'__icontains':form.cleaned_data['term']})
+        ids = request.GET.getlist("exclude[]")
+        objs = model.objects\
+                .filter(**{search_field+'__icontains':form.cleaned_data['term']})\
+                .exclude(id__in=ids)
     else:
         objs = model.objects.all()[:50]
 

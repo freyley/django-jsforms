@@ -7,8 +7,7 @@ function source_override (itemlist, request, response) {
     var exclude = itemlist.item_ids(),
         term = request.term;
 
-    console.log("exclude", exclude);
-    console.log("itemlist.item_ids()", itemlist.item_ids());
+    console.log("searching", { term: term, exclude: exclude });
 
     $.ajax({
         url: itemlist.url,
@@ -110,8 +109,8 @@ var Itemlist = function(_, input) {
 
     that.item_ids = function() {
         var ids = [];
-        $.each(that.items, function(id, _) {
-            ids.push(id);
+        $.each(that.items, function(id, val) {
+            ids.push(val.id);
         });
         return ids;
     };
