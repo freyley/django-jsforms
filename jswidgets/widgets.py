@@ -31,11 +31,14 @@ class SingleModelSelect(forms.TextInput):
         new_attrs['data-target-id'] = new_attrs['id']
         new_attrs['id'] = new_attrs['id'] + '_visible'
 
-        visible = super(SingleModelSelect, self).render(name+"_visible", value, new_attrs)
+        visible = super(SingleModelSelect, self).render(name+"_visible", self.visible_value(value), new_attrs)
         hidden_attrs = attrs.copy()
         hidden_attrs['type'] = 'hidden'
         hidden = super(SingleModelSelect, self).render(name, value, hidden_attrs)
         return visible + hidden
+
+    def visible_value(self, value):
+        return self.model.objects.get(pk=int(value))
 
     def get_css_class(self):
         return "jswidget-singleselect"
@@ -57,7 +60,10 @@ class MultiModelSelect(SingleModelSelect):
             raise Exception("Cannot instantiate MultiModelSelect without an id")
         html = []
         html.append(super(MultiModelSelect, self).render(name, value, attrs))
-        html.append('<ul class="itemlist" id="%s_itemlist"></ul>' % attrs['id'])
+        existing_data = ""
+        if value:
+            existing_data = "data-existing-data=\"[{'id' : 1, 'label' : 'fake1'} ]\""
+        html.append('<ul class="itemlist" id="%s_itemlist" %s></ul>' % (attrs['id'], existing_data))
 
         # js templates
         js_tmpl = loader.get_template(self.list_item_template)
@@ -74,6 +80,10 @@ class MultiModelSelect(SingleModelSelect):
             )
 
         return mark_safe(u'\n'.join(html))
+
+    def visible_value(self, value):
+        return ""
+
 
     def get_css_class(self):
         return "jswidget-multiselect"
