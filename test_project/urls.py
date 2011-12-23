@@ -17,7 +17,7 @@ urlpatterns = patterns(
     # Uncomment the next line to enable the admin:
     (r'^admin/', include(admin.site.urls)),
     (r'^jswidgets-api/', include('jswidgets.urls')),
-    (r'^testapp/', include('testapp.urls')),
+    url(r'^$', 'testapp.views.foo', name="test"),
 
 )
 

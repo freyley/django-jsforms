@@ -11,6 +11,7 @@ def foo(request):
         if form.is_valid():
             form.save()
     else:
+
         form = BarForm()
     return dict(
         form = form,
