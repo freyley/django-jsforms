@@ -2,6 +2,8 @@ from django import forms
 from django.core.urlresolvers import reverse
 from django.template import loader, Context
 from django.utils.safestring import mark_safe
+from .tools import idstring_to_list, idlist_to_models, get_display_field
+from django.utils import simplejson as sj
 
 empty = Context({})
 
@@ -62,7 +64,12 @@ class MultiModelSelect(SingleModelSelect):
         html.append(super(MultiModelSelect, self).render(name, value, attrs))
         existing_data = ""
         if value:
-            existing_data = "data-existing-data=\"[{'id' : 1, 'label' : 'fake1'} ]\""
+            models = idlist_to_models(idstring_to_list(value), self.model)
+            display_field = get_display_field(self.model)
+            field_data = [ { 'label' : getattr(model, display_field),
+                             'id' : model.id,
+                             } for model in models ]
+            existing_data = "data-existing-data=%s"  % sj.dumps(field_data)
         html.append('<ul class="itemlist" id="%s_itemlist" %s></ul>' % (attrs['id'], existing_data))
 
         # js templates

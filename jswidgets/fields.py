@@ -1,5 +1,6 @@
 from django import forms
 from .widgets import MultiModelSelect, SingleModelSelect
+from .tools import idstring_to_list, idlist_to_models
 
 class SingleModelField(forms.ModelChoiceField):
     def __init__(self, *args, **kwargs):
@@ -30,18 +31,8 @@ class MultiModelField(forms.ModelMultipleChoiceField):
         super(MultiModelField, self).__init__(*args, queryset=model.objects.all(),  **kwargs)
 
     def to_python(self, value):
-        # this is where we turn the string into a list of ids
-        try:
-            return [ int(v.strip()) for v in value.split(',')]
-        except ValueError:
-            raise forms.ValidationError("%s not a valid intlist" % value)
+        return idstring_to_list(value)
 
     def clean(self, value):
         ids = self.to_python(value)
-        model_objects = []
-        for id in ids:
-            try:
-                model_objects.append(self.model.objects.get(pk=id))
-            except self.model.DoesNotExist:
-                raise forms.ValidationError("id %d not found" % id)
-        return model_objects
+        return idlist_to_models(ids, self.model)
