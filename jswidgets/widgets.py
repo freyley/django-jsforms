@@ -69,6 +69,7 @@ class MultiModelSelect(SingleModelSelect):
         html.append(super(MultiModelSelect, self).render(name, value, attrs))
         existing_data = ""
         if value:
+            import ipdb; ipdb.set_trace()
             models = idlist_to_models(idstring_to_list(value), self.model)
             display_field = get_display_field(self.model)
             field_data = [ { 'label' : getattr(model, display_field),

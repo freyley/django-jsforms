@@ -3,6 +3,8 @@ from django.conf import settings
 
 def idstring_to_list(value):
     # this is where we turn the string into a list of ids
+    if len(value) == 0:
+        return []
     try:
         return [ int(v.strip()) for v in value.split(',')]
     except ValueError:
