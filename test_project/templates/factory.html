@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<h1>List of Factories</h1>
+<ul>
+    {% for factory in factories %}
+        <li>{{ factory }}</li>
+    {% endfor %}
+</ul>
+
+<h1>Create a new Factory</h1>
+<form method="POST">
+    {% csrf_token %}
+    <ul>
+        {{ factory_form.as_ul }}
+    </ul>
+    <input type="submit" value="save"/>
+</form>
+
+{% endblock %}

@@ -34,7 +34,12 @@
 </head>
 
 <body>
-        <div id="content" class="content">
+    <div id="content" class="content"
+        <ul>
+            <li><a href="{% url demo %}">Home</a></li>
+            <li><a href="{% url authors %}">Authors</a></li>
+            <li><a href="{% url factories %}">Factories</a></li>
+        </ul>
           {% block content %}{% endblock %}
         </div>
 </body>

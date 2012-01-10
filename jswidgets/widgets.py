@@ -100,3 +100,26 @@ class MultiModelSelect(SingleModelSelect):
     def get_css_class(self):
         return "jswidget-multiselect"
 
+
+
+class Formset(forms.TextInput):
+
+    def __init__(self, form_class, *args, **kwargs):
+        self.format = kwargs.pop('format') 
+        self.form_class = form_class
+        super(Formset, self).__init__(*args, **kwargs)
+
+    def render(self, name, value, attrs=None):
+        fs_factory = forms.formsets.formset_factory(self.form_class)
+        fs = fs_factory(prefix="jswidgets-%s" % name)
+
+        # import ipdb; ipdb.set_trace()
+        if self.format == 'ul':
+            return fs.as_ul()
+        elif self.format == 'table':
+            return fs.as_table()
+        elif self.format == 'p':
+            return fs.as_p()
+
+
+# >> mother = PersonForm(prefix="mother") 
