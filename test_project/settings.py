@@ -90,8 +90,8 @@ TEMPLATE_DIRS = (
 )
 
 JSWIDGETS_MODELS = ( 
-    ("testapp.Foo", "name"),
-    ("testapp.Baz", "name"),
+    ("testapp.Book", "title"),
+    ("testapp.Publisher", "name"),
     )
 INSTALLED_APPS = (
     'django.contrib.auth',

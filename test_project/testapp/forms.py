@@ -1,11 +1,17 @@
 from jswidgets import fields as jsfields
 from django import forms
-from .models import Foo, Bar, Baz
+from .models import Author, Publisher, Book, Factory, BookFormat
 
-class BarForm(forms.ModelForm):
-    foo = jsfields.SingleModelField(model=Foo)
-    bazes = jsfields.MultiModelField(model=Baz, required=False)
+
+class AuthorForm(forms.ModelForm):
+    publisher = jsfields.SingleModelField(model=Publisher)
+    books = jsfields.MultiModelField(model=Book, required=False)
 
     class Meta:
-        model = Bar
-        
+        model = Author
+
+
+class FactoryForm(forms.ModelForm):
+
+    class Meta:
+        model = Factory

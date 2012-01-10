@@ -1,7 +1,9 @@
 from django.contrib import admin
-from models import Foo, Bar, Baz
+from models import Author, Book, BookFormat, Publisher, Factory
 
-admin.site.register(Foo)
-admin.site.register(Bar)
-admin.site.register(Baz)
+admin.site.register(Author)
+admin.site.register(Book)
+admin.site.register(BookFormat)
+admin.site.register(Publisher)
+admin.site.register(Factory)
 

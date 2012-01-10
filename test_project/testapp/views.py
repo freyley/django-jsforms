@@ -1,19 +1,18 @@
 # Create your views here.
 
 from lib.decorators import template
-from .forms import BarForm
-from .models import Bar
+from .forms import AuthorForm, FactoryForm
+from .models import Author
 
-@template("foo.html")
-def foo(request):
+@template("demo.html")
+def demo(request):
     if request.method == "POST":
-        form = BarForm(request.POST)
-        if form.is_valid():
-            form.save()
+        author_form = AuthorForm(request.POST)
+        if author_form.is_valid():
+            author_form.save()
     else:
-
-        form = BarForm()
+        author_form = AuthorForm()
     return dict(
-        form = form,
-        bars = Bar.objects.all()
+        author_form = author_form,
+        authors = Author.objects.all()
         )
