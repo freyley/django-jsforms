@@ -1,31 +1,3 @@
 {% extends "base.html" %}
 
 
-{% block content %}
-
-<h1>List of Authors</h1>
-<ul>
-    {% for author in authors %}
-        <li>{{ author }}</li>
-    {% endfor %}
-</ul>
-
-<h1>Create a new Author</h1>
-<form method="POST">
-    {% csrf_token %}
-    <ul>
-        {{ author_form.as_ul}}
-    </ul>
-    <input type="submit" value="save"/>
-</form>
-
-<h1>Create a new Factory</h1>
-<form method="POST">
-    {% csrf_token %}
-    <ul>
-        {{factory_form.as_ul}}
-    </ul>
-    <input type="submit" value="save"/>
-</form>
-
-{% endblock %}
