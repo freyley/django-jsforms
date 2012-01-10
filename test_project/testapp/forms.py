@@ -19,7 +19,7 @@ class BookFormatForm(forms.ModelForm):
 
 
 class FactoryForm(jsforms.ModelForm):
-    book_formats = jsfields.FormsetField(BookFormatForm, format="ul")
+    book_formats = jsfields.FormsetField(BookFormatForm, format="ul", save_to="book_formats")
 
     class Meta:
         model = Factory

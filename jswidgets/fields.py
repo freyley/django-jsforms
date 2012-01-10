@@ -61,7 +61,7 @@ class FormsetField(forms.Field):
         fs_class = forms.formsets.formset_factory(self.form_class)
         fs = fs_class(self.form_data, prefix='jswidgets-%s' % self.field_name)
         if fs.is_valid():
-            return fs.cleaned_data
+            return fs.forms
         else:
             raise forms.ValidationError(fs.errors)
 

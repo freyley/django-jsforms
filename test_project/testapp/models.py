@@ -34,9 +34,15 @@ class BookFormat(models.Model):
     max_pages = models.IntegerField(max_length=255)
 
     def __unicode__(self):
-        return self.thing_one
+        return "%s x %s x %s" % (self.height, self.width, self.max_pages)
 
 
 class Factory(models.Model):
     address = models.CharField(max_length=255)
     book_formats = models.ManyToManyField(BookFormat, blank=True, null=True)
+
+    def __unicode__(self):
+        return "address: %s with formats %s" % (
+                self.address,
+                ",".join([str(bf) for bf in self.book_formats.all()]),
+        )
