@@ -54,9 +54,14 @@ class FormsetField(forms.Field):
         self.form_data = {}
         for key, val in form_data.items():
             if key.startswith('jswidgets-%s' % field_name):
-                shortkey = '-'.join(key.split('-')[2:])
-                self.form_data[shortkey] = val
+                self.form_data[key] = val
 
     def clean(self, value):
-        import ipdb; ipdb.set_trace()
-        return "formset"
+        # TODO: turn the data in self.form_data into a formset
+        fs_class = forms.formsets.formset_factory(self.form_class)
+        fs = fs_class(self.form_data, prefix='jswidgets-%s' % self.field_name)
+        if fs.is_valid():
+            return fs.cleaned_data
+        else:
+            raise forms.ValidationError(fs.errors)
+
