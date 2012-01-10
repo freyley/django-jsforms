@@ -11,7 +11,7 @@ class ModelForm(forms.ModelForm):
         for name, field in self.fields.items():
             try:
                 field._is_jswidgets_field
-            except AttributeError: 
+            except AttributeError:
                 continue
             field.prepare_to_be_cleaned(name, self.data)
 
@@ -30,10 +30,10 @@ class ModelForm(forms.ModelForm):
         instance = super(ModelForm, self).save(*args, **kwargs)
         # TODO: check what to do if commit=False
 
-        
+
         def save_forms():
             for field_name, formlist in jswidgets_formlists.items():
-                obj_field = getattr(instance, field_name)
+                obj_field = getattr(instance, self.fields[field_name].save_to)
                 obj_field.clear()
                 for form in formlist:
                     obj_field.add(form.save())
@@ -47,5 +47,3 @@ class ModelForm(forms.ModelForm):
                 _old_save_m2m()
                 save_forms()
             self.save_m2m = save_m2m_2
-
-

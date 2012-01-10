@@ -44,9 +44,11 @@ class FormsetField(forms.Field):
         self.field_name = None
         self.form_data = None
         self.form_class = form_class
-        field_kwargs = {}
-        field_kwargs['format'] = kwargs.pop('format', 'ul')
-        self.widget = Formset(form_class, **field_kwargs)
+        self.save_to = kwargs.pop('save_to', self.field_name)
+        widget_kwargs = {}
+        widget_kwargs['format'] = kwargs.pop('format', 'ul')
+        widget_kwargs['extra'] = kwargs.pop('extra', 2)
+        self.widget = Formset(form_class, **widget_kwargs)
         super(FormsetField, self).__init__("some label", )
 
     def prepare_to_be_cleaned(self, field_name, form_data):
