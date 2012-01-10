@@ -1,4 +1,5 @@
 from jswidgets import fields as jsfields
+from jswidgets import forms as jsforms
 from django import forms
 from .models import Author, Publisher, Book, Factory, BookFormat
 
@@ -11,7 +12,16 @@ class AuthorForm(forms.ModelForm):
         model = Author
 
 
-class FactoryForm(forms.ModelForm):
+class BookFormatForm(forms.ModelForm):
+
+    class Meta:
+        model = BookFormat
+
+
+class FactoryForm(jsforms.ModelForm):
+    book_formats = jsfields.FormsetField(BookFormatForm, format="ul")
 
     class Meta:
         model = Factory
+
+

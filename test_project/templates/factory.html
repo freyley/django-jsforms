@@ -14,7 +14,7 @@
 <form method="POST">
     {% csrf_token %}
     <ul>
-        {{factory_form.as_ul}}
+        {{ factory_form.as_ul }}
     </ul>
     <input type="submit" value="save"/>
 </form>
