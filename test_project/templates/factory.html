@@ -6,7 +6,9 @@
 <h1>List of Factories</h1>
 <ul>
     {% for factory in factories %}
-        <li>{{ factory }}</li>
+    <li>
+        <a href="{% url edit_factory factory.id %}">edit</a>
+        {{ factory }}</li>
     {% endfor %}
 </ul>
 

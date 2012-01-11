@@ -19,7 +19,9 @@ urlpatterns = patterns(
     (r'^jswidgets-api/', include('jswidgets.urls')),
     url(r'^$', 'testapp.views.demo', name="demo"),
     url(r'^authors$', 'testapp.views.author', name="authors"),
+    url(r'^authors/(?P<author_id>\d+)$', 'testapp.views.edit_author', name="edit_author"),
     url(r'^factories$', 'testapp.views.factory', name="factories"),
+    url(r'^factories/(?P<factory_id>\d+)$', 'testapp.views.edit_factory', name="edit_factory"),
 
 )
 

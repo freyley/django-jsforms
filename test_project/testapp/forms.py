@@ -24,12 +24,17 @@ class BookFormatForm(forms.ModelForm):
 
 
 class FactoryForm(jsforms.ModelForm):
-    book_formatssss = jsfields.FormsetField(
+    '''
+    book_formats = jsfields.FormsetField(
             BookFormatForm,
             format="ul",
             extra=1,
-            save_to="book_formats",
+            # save_to="book_formats",
             )
+    '''
+    book_formats = forms.ModelMultipleChoiceField(
+            queryset=BookFormat.objects.all())
+
 
     class Meta:
         model = Factory

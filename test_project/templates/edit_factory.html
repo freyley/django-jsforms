@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<h1>Editing Factory</h1>
+<form method="POST">
+    {% csrf_token %}
+    <ul>
+        {{ factory_form.as_ul }}
+    </ul>
+    <input type="submit" value="save"/>
+</form>
+
+{% endblock %}
