@@ -121,6 +121,3 @@ class Formset(forms.TextInput):
             return fs.as_table()
         elif self.format == 'p':
             return fs.as_p()
-
-
-# >> mother = PersonForm(prefix="mother")

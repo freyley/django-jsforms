@@ -1,9 +1,6 @@
 from django import forms
 
 
-
-# AWESOME SHIT GOES HERE!!!!!
-
 class ModelForm(forms.ModelForm):
 
     def full_clean(self, *args, **kwargs):
@@ -28,15 +25,18 @@ class ModelForm(forms.ModelForm):
                 cleaned_data_minus_jswidgets[key] = val
         self.cleaned_data = cleaned_data_minus_jswidgets
         instance = super(ModelForm, self).save(*args, **kwargs)
-        # TODO: check what to do if commit=False
-
 
         def save_forms():
             for field_name, formlist in jswidgets_formlists.items():
-                obj_field = getattr(instance, self.fields[field_name].save_to)
+                if self.fields[field_name].save_to: 
+                    model_field = self.fields[field_name].save_to
+                else:
+                    model_field = field_name
+                obj_field = getattr(instance, model_field)
                 obj_field.clear()
                 for form in formlist:
                     obj_field.add(form.save())
+
         commit = kwargs.get('commit', True)
         if commit:
             save_forms()
