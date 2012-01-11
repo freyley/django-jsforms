@@ -11,7 +11,7 @@ empty = Context({})
 
 
 class SingleModelSelect(forms.TextInput):
-    """ 
+    """
     Use this to select a single instance of a model
     with too many to have a simple select field.
     Must be used on a field with a queryset variable
@@ -29,7 +29,7 @@ class SingleModelSelect(forms.TextInput):
         css += self.get_css_class()
         new_attrs['class'] = css
         new_attrs['data-sourceurl'] = reverse(
-            "aw_search_%s_%s" % (self.model._meta.app_label, 
+            "aw_search_%s_%s" % (self.model._meta.app_label,
                                  self.model.__name__)
             )
         new_attrs['data-target-id'] = new_attrs['id']
@@ -105,12 +105,13 @@ class MultiModelSelect(SingleModelSelect):
 class Formset(forms.TextInput):
 
     def __init__(self, form_class, *args, **kwargs):
-        self.format = kwargs.pop('format') 
+        self.format = kwargs.pop('format')
+        self.extra = kwargs.pop('extra')
         self.form_class = form_class
         super(Formset, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
-        fs_factory = forms.formsets.formset_factory(self.form_class)
+        fs_factory = forms.formsets.formset_factory(self.form_class, extra=self.extra)
         fs = fs_factory(prefix="jswidgets-%s" % name)
 
         # import ipdb; ipdb.set_trace()
@@ -120,6 +121,3 @@ class Formset(forms.TextInput):
             return fs.as_table()
         elif self.format == 'p':
             return fs.as_p()
-
-
-# >> mother = PersonForm(prefix="mother") 
