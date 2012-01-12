@@ -111,9 +111,15 @@ class Formset(forms.TextInput):
         super(Formset, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
-        fs_factory = forms.formsets.formset_factory(self.form_class, extra=self.extra)
-        fs = fs_factory(prefix="jswidgets-%s" % name)
-        import ipdb; ipdb.set_trace()
+        field_name = self._field.save_to or name
+        mfs_factory = forms.models.modelformset_factory(self.form_class._meta.model, extra=self.extra)
+        try:
+            dataset = getattr(self._field._form.instance, field_name).all()
+            fs = mfs_factory(prefix="jswidgets-%s" % name, queryset=dataset)
+        except ValueError:
+            fs = mfs_factory(prefix="jswidgets-%s" % name, queryset=self.form_class._meta.model.objects.none())
+
+
 
         if self.format == 'ul':
             return fs.as_ul()

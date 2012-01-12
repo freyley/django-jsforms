@@ -28,7 +28,7 @@ class FactoryForm(jsforms.ModelForm):
             BookFormatForm,
             format="ul",
             extra=1,
-            # save_to="book_formats",
+            save_to="bookformat_set",
             )
     '''
     book_formats = forms.ModelMultipleChoiceField(

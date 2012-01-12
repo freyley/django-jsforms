@@ -9,13 +9,14 @@ class BoundField(django_BoundField):
         super(BoundField, self).__init__(form, field, name)
         self.field._form = form
         self.field.widget._field = self.field
-
-"""    def value(self):
+    """
+    def value(self):
         try:
             self.field._is_jswidgets_field
-            import ipdb; ipdb.set_trace()
+            return "foobar"
         except AttributeError: pass
-"""
+        return super(BoundField, self).value()
+    """
 
 class ModelForm(forms.ModelForm):
     bound_field_class = BoundField

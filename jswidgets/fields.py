@@ -67,11 +67,4 @@ class FormsetField(forms.Field):
         else:
             raise forms.ValidationError(fs.errors)
 
-    def prepare_value(self, value):
-        import ipdb; ipdb.set_trace()
-        '''
-        if hasattr(value, '__iter__'):
-            return [super(ModelMultipleChoiceField, self).prepare_value(v) for v in value]
-        return super(ModelMultipleChoiceField, self).prepare_value(value)
-        '''
 
