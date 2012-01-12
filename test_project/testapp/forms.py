@@ -25,10 +25,11 @@ class BookFormatForm(forms.ModelForm):
 
 class FactoryForm(jsforms.ModelForm):
     book_formats = jsfields.FormsetField(
-            BookFormatForm,
+            BookFormatForm, # allow passing in model instead of modelform
             format="ul",
             extra=1,
-            save_to="bookformat_set",
+            # save_to="book_formats",
+            # 
             )
     '''
     book_formats = forms.ModelMultipleChoiceField(

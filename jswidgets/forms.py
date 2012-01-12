@@ -141,6 +141,16 @@ class ModelForm(forms.ModelForm):
                 obj_field = getattr(instance, model_field)
                 obj_field.clear()
                 for form in formlist:
+                    if hasattr(form, 'is_empty'):
+                        if callable(form.is_empty):
+                            if form.is_empty():
+                                continue
+                        else:
+                            if form.is_empty:
+                                continue
+                    else:
+                        if not form.cleaned_data:
+                            continue
                     obj_field.add(form.save())
 
         commit = kwargs.get('commit', True)

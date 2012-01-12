@@ -47,7 +47,7 @@ class FormsetField(forms.Field):
         self.save_to = kwargs.pop('save_to', self.field_name)
         widget_kwargs = {}
         widget_kwargs['format'] = kwargs.pop('format', 'ul')
-        widget_kwargs['extra'] = kwargs.pop('extra', 2)
+        widget_kwargs['template'] = kwargs.pop('template', None)
         self.widget = Formset(form_class, **widget_kwargs)
         super(FormsetField, self).__init__("some label", )
 
@@ -59,9 +59,9 @@ class FormsetField(forms.Field):
                 self.form_data[key] = val
 
     def clean(self, value):
-        # TODO: turn the data in self.form_data into a formset
         fs_class = forms.formsets.formset_factory(self.form_class)
         fs = fs_class(self.form_data, prefix='jswidgets-%s' % self.field_name)
+
         if fs.is_valid():
             return fs.forms
         else:
