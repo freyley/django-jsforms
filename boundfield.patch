@@ -1,0 +1,37 @@
+--- forms.py	2011-12-22 15:00:46.000000000 -0800
++++ new_forms.py	2012-01-11 16:00:17.771616110 -0800
+@@ -69,6 +69,7 @@
+     # class is different than Form. See the comments by the Form class for more
+     # information. Any improvements to the form API should be made to *this*
+     # class, not to the Form class.
++    _bound_field_class = BoundField
+     def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None,
+                  initial=None, error_class=ErrorList, label_suffix=':',
+                  empty_permitted=False):
+@@ -96,7 +97,7 @@
+ 
+     def __iter__(self):
+         for name, field in self.fields.items():
+-            yield BoundField(self, field, name)
++            yield self._bound_field_class(self, field, name)
+ 
+     def __getitem__(self, name):
+         "Returns a BoundField with the given name."
+@@ -104,7 +105,7 @@
+             field = self.fields[name]
+         except KeyError:
+             raise KeyError('Key %r not found in Form' % name)
+-        return BoundField(self, field, name)
++        return self._bound_field_class(self, field, name)
+ 
+     def _get_errors(self):
+         "Returns an ErrorDict for the data provided for the form"
+@@ -142,7 +143,7 @@
+ 
+         for name, field in self.fields.items():
+             html_class_attr = ''
+-            bf = BoundField(self, field, name)
++            bf = self._bound_field_class(self, field, name)
+             bf_errors = self.error_class([conditional_escape(error) for error in bf.errors]) # Escape and cache in local variable.
+             if bf.is_hidden:
+                 if bf_errors:

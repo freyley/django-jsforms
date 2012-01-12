@@ -24,7 +24,6 @@ class BookFormatForm(forms.ModelForm):
 
 
 class FactoryForm(jsforms.ModelForm):
-    '''
     book_formats = jsfields.FormsetField(
             BookFormatForm,
             format="ul",
@@ -34,6 +33,7 @@ class FactoryForm(jsforms.ModelForm):
     '''
     book_formats = forms.ModelMultipleChoiceField(
             queryset=BookFormat.objects.all())
+    '''
 
 
     class Meta:

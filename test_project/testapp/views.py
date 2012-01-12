@@ -49,7 +49,6 @@ def edit_factory(request, factory_id):
             factory_form.save()
     else:
         factory_form = FactoryForm(instance=factory)
-    import ipdb; ipdb.set_trace()
     return dict(
         factory_form = factory_form,
         factories = Factory.objects.all()
