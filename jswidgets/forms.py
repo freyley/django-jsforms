@@ -151,7 +151,11 @@ class ModelForm(forms.ModelForm):
                     else:
                         if not form.cleaned_data:
                             continue
-                    obj_field.add(form.save())
+                    if form.cleaned_data['DELETE']:
+                        # if we have delete-removed, delete this object
+                        pass
+                    else:
+                        obj_field.add(form.save())
 
         commit = kwargs.get('commit', True)
         if commit:

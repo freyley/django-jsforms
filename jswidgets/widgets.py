@@ -102,20 +102,24 @@ class MultiModelSelect(SingleModelSelect):
 
 
 
-class Formset(forms.TextInput):
+class ModelFormset(forms.TextInput):
 
     def __init__(self, form_class, *args, **kwargs):
         self.format = kwargs.pop('format', None)
         self.template = kwargs.pop('template', None)
+        self.extra = kwargs.pop('extra', 0)
         if self.template:
             self.format = 'template'
 
         self.form_class = form_class
-        super(Formset, self).__init__(*args, **kwargs)
+        super(ModelFormset, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
         field_name = self._field.save_to or name
-        mfs_factory = forms.models.modelformset_factory(self.form_class._meta.model, extra=1)
+        mfs_factory = forms.models.modelformset_factory(
+                self.form_class._meta.model,
+                can_delete=True,
+                extra=self.extra)
 
         try:
             dataset = getattr(self._field._form.instance, field_name).all()
@@ -123,11 +127,12 @@ class Formset(forms.TextInput):
         except ValueError:
             fs = mfs_factory(prefix="jswidgets-%s" % name, queryset=self.form_class._meta.model.objects.none())
         if self.format == 'ul':
-            return "%s<script>%s</script>" % (fs.as_ul(), fs.empty_form.as_ul())
+            return '%s<script type="text/template">%s</script>' % (fs.as_ul(), fs.empty_form.as_ul())
         elif self.format == 'table':
-            return "%s<script>%s</script>" % (fs.as_table(), fs.empty_form.as_table())
+            return '%s<script type="text/template">%s</script>' % (fs.as_table(), fs.empty_form.as_table())
         elif self.format == 'p':
-            return "%s<script>%s</script>" % (fs.as_p(), fs.empty_form.as_p())
+            return '%s<script type="text/template">%s</script>' % (fs.as_p(), fs.empty_form.as_p())
         elif self.format == 'template':
+            # TODO
             return "a template"
 
