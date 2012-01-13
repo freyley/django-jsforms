@@ -164,7 +164,7 @@ var Itemlist = function(_, input) {
 
 
 $(function() {
-    $.each($(".jswidget-multiselect"), Itemlist);
+    $.each($(".jswidgets-multiselect"), Itemlist);
 });
 
 

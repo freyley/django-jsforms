@@ -23,15 +23,12 @@ define( ["./multi_model_select"], function(MMS) {
 
 
     $(function() {
-        console.log("setting up the stuff");
-
-        $.each($('.jswidget-singleselect'), function(_, elem) {
+        $.each($('.jswidgets-singleselect'), function(_, elem) {
             create_singleselect(elem);
         });
         $.each($('.jswidgets-opener'), function(_, elem) {
             create_divopener(elem);
         });
-
     });
 
 

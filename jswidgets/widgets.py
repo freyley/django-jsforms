@@ -48,7 +48,7 @@ class SingleModelSelect(forms.TextInput):
             return ""
 
     def get_css_class(self):
-        return "jswidget-singleselect"
+        return "jswidgets-singleselect"
 
 class MultiModelSelect(SingleModelSelect):
 
@@ -98,7 +98,7 @@ class MultiModelSelect(SingleModelSelect):
 
 
     def get_css_class(self):
-        return "jswidget-multiselect"
+        return "jswidgets-multiselect"
 
 
 
