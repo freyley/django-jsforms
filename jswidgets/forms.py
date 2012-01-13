@@ -152,7 +152,7 @@ class ModelForm(forms.ModelForm):
                         if not form.cleaned_data:
                             continue
                     if form.cleaned_data['DELETE']:
-                        # if we have delete-removed, delete this object
+                        # TODO: if we have delete-removed, delete this object
                         pass
                     else:
                         obj_field.add(form.save())

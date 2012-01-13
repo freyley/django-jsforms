@@ -127,11 +127,11 @@ class ModelFormset(forms.TextInput):
         except ValueError:
             fs = mfs_factory(prefix="jswidgets-%s" % name, queryset=self.form_class._meta.model.objects.none())
         if self.format == 'ul':
-            return '%s<script type="text/template">%s</script>' % (fs.as_ul(), fs.empty_form.as_ul())
+            return '%s<script style="jswidgets-formsetfield" type="text/template">%s</script>' % (fs.as_ul(), fs.empty_form.as_ul())
         elif self.format == 'table':
-            return '%s<script type="text/template">%s</script>' % (fs.as_table(), fs.empty_form.as_table())
+            return '%s<script style="jswidgets-formsetfield" type="text/template">%s</script>' % (fs.as_table(), fs.empty_form.as_table())
         elif self.format == 'p':
-            return '%s<script type="text/template">%s</script>' % (fs.as_p(), fs.empty_form.as_p())
+            return '%s<script style="jswidgets-formsetfield" type="text/template">%s</script>' % (fs.as_p(), fs.empty_form.as_p())
         elif self.format == 'template':
             # TODO
             return "a template"
