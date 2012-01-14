@@ -1,5 +1,9 @@
-define( ["./multi_model_select"], function(MMS) {
+define([
+        "./multi_model_select", 
+        "./formset_field", 
+        ], function(MMS, FSF) {
     // we're assuming jquery and jqueryUI exist - they SHOULD be loaded.
+
 
     function create_singleselect(elem) {
         $(elem).autocomplete({
@@ -12,6 +16,8 @@ define( ["./multi_model_select"], function(MMS) {
         });
 
     };
+
+
     function create_divopener(elem) {
         var id = $(elem).data("opens");
         $("#"+id).hide();
@@ -30,8 +36,6 @@ define( ["./multi_model_select"], function(MMS) {
             create_divopener(elem);
         });
     });
-
-
 
 
     return {

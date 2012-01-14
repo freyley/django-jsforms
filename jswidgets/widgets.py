@@ -126,12 +126,29 @@ class ModelFormset(forms.TextInput):
             fs = mfs_factory(prefix="jswidgets-%s" % name, queryset=dataset)
         except ValueError:
             fs = mfs_factory(prefix="jswidgets-%s" % name, queryset=self.form_class._meta.model.objects.none())
+
+        script_open = '<script type="text/template" class="jswidgets-formsetfield-template" data-name="%s">' % name
+        add_button = '<a class="jswidgets-formsetfield-addform-%s" href="#">add form</a>' % name
+
         if self.format == 'ul':
-            return '%s<script style="jswidgets-formsetfield" type="text/template">%s</script>' % (fs.as_ul(), fs.empty_form.as_ul())
+            open_ul = '<ul class="jswidgets-formsetfield-form-%s">' % name
+            r = "".join((
+                    fs.management_form.as_ul(),
+                    script_open,
+                    open_ul,
+                    fs.empty_form.as_ul(),
+                    '</ul>',
+                    '</script>',
+                    ))
+            for f in fs.forms:
+                r += open_ul + f.as_ul() + "</ul>"
+            r += add_button
+            return r
+
         elif self.format == 'table':
-            return '%s<script style="jswidgets-formsetfield" type="text/template">%s</script>' % (fs.as_table(), fs.empty_form.as_table())
+            return '%s</tr><script type="text/template">%s</script>' % (fs.as_table(), fs.empty_form.as_table())
         elif self.format == 'p':
-            return '%s<script style="jswidgets-formsetfield" type="text/template">%s</script>' % (fs.as_p(), fs.empty_form.as_p())
+            return '%s<script class="jswidgets-formsetfield" type="text/template">%s</script>' % (fs.as_p(), fs.empty_form.as_p())
         elif self.format == 'template':
             # TODO
             return "a template"
