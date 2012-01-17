@@ -36,9 +36,21 @@ define([], function() {
     };
 
 
-    var renumber_form = function(form, number, data) {
-        console.log("renumbering", form, number, data);
-        debugger;
+    var decrement_form = function(form, num, data) {
+        var old_num = num + 1,
+            old_str = "jswidgets-" + data.name + "-" + old_num + "-",
+            new_str = "jswidgets-" + data.name + "-" + num + "-";
+
+        console.log(old_str, new_str);
+        $.each(form.find("*"), function(_, elem) {
+            var e = $(elem);
+            if(e.prop("for"))
+                e.prop("for", e.prop("for").replace(old_str, new_str));
+            if(e.prop("id"))
+                e.prop("id", e.prop("id").replace(old_str, new_str));
+            if(e.prop("name"))
+                e.prop("name", e.prop("name").replace(old_str, new_str));
+        });
     };
 
 
@@ -47,17 +59,25 @@ define([], function() {
         var index = $.inArray(form, data.forms);
         var id_field = form.find("#id_jswidgets-book_formats-" + index + "-id");
 
-        debugger;
-
         if(id_field.val() == "") {
             // form was created on this page
+            data.forms.splice(index, 1);
             form.remove();
+
+            for(var i=index; i<data.forms.length; i++) {
+                var f = data.forms[i];
+                decrement_form(f, i, data);
+            }
+
+
+/*
             var total = 0;
             $.each($(".jswidgets-formsetfield-form-" + data.name), function(_, f) {
                 renumber_form(f, total, data);
                 total += 1;
             });
             data.total_forms = total;
+            */
             update_management_form(data);
 
         } else {
