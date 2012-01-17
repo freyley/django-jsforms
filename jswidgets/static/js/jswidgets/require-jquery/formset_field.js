@@ -69,20 +69,12 @@ define([], function() {
                 decrement_form(f, i, data);
             }
 
-
-/*
-            var total = 0;
-            $.each($(".jswidgets-formsetfield-form-" + data.name), function(_, f) {
-                renumber_form(f, total, data);
-                total += 1;
-            });
-            data.total_forms = total;
-            */
+            data.total_forms = data.forms.length;
             update_management_form(data);
-
         } else {
             // form is bound
-            console.log("todo");
+            form.find("#id_jswidgets-" + data.name + "-" + index + "-DELETE").prop("checked", true);
+            form.hide();
         }
     };
 
