@@ -154,8 +154,34 @@ class ModelFormset(forms.TextInput):
             return "a template"
 
 
+
+
+
+
+
+
+
 class ImageFormset(forms.TextInput):
 
-    def render(self, *args, **kwargs):
-        return "testing 123"
+    def render(self, name, value, attrs=None):
+        new_attrs = attrs.copy()
 
+        css = new_attrs.get('class', '')
+        if css:
+            css += ' '
+        css += self.get_css_class()
+        new_attrs['class'] = css
+
+        visible = super(SingleModelSelect, self).render(name+"_visible", self.visible_value(value), new_attrs)
+
+        hidden_attrs = attrs.copy()
+        hidden_attrs['type'] = 'hidden'
+        hidden = super(SingleModelSelect, self).render(name, value, hidden_attrs)
+        return visible + hidden
+
+        return '''
+            <div id="jswidgets-imageformset-blah">
+                %s
+                form goes here
+            </div>
+        ''' % (hidden)
