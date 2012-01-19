@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<h1>List of Farms</h1>
+<ul>
+    {% for farm in farms %}
+    <li>
+        <a href="{% url edit_farm farm.id %}">edit</a>
+        {{ farm }}</li>
+    {% endfor %}
+</ul>
+
+<h1>Create a new Farm</h1>
+<form method="POST">
+    {% csrf_token %}
+    <ul>
+        {{ farm_form.as_ul }}
+    </ul>
+    <input type="submit" value="save"/>
+</form>
+
+{% endblock %}

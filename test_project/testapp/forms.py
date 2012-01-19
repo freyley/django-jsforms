@@ -1,7 +1,7 @@
 from jswidgets import fields as jsfields
 from jswidgets import forms as jsforms
 from django import forms
-from .models import Author, Publisher, Book, Factory, BookFormat
+from .models import Author, Publisher, Book, Factory, BookFormat, Animal, Farm
 
 
 class AuthorForm(forms.ModelForm):
@@ -42,3 +42,16 @@ class FactoryForm(jsforms.ModelForm):
         model = Factory
         exclude = "book_formats"
 
+
+class AnimalForm(jsforms.ModelForm):
+
+    class Meta:
+        model = Animal
+
+
+class FarmForm(jsforms.ModelForm):
+    ducks = jsfields.ImageFormsetField(AnimalForm)
+    chickens = jsfields.ImageFormsetField(AnimalForm)
+
+    class Meta:
+        model = Farm

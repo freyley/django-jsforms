@@ -153,3 +153,9 @@ class ModelFormset(forms.TextInput):
             # TODO
             return "a template"
 
+
+class ImageFormset(forms.TextInput):
+
+    def render(self, *args, **kwargs):
+        return "testing 123"
+

@@ -37,8 +37,9 @@
     <div id="content" class="content"
         <ul>
             <li><a href="{% url demo %}">Home</a></li>
-            <li><a href="{% url authors %}">Authors</a></li>
-            <li><a href="{% url factories %}">Factories</a></li>
+            <li><a href="{% url authors %}">Authors</a> (autocomplete fields)</li>
+            <li><a href="{% url factories %}">Factories</a> (multimodelformset field)</li>
+            <li><a href="{% url farms %}">Farms</a> (image field)</li>
         </ul>
           {% block content %}{% endblock %}
         </div>

@@ -1,5 +1,6 @@
 from django import forms
-from .widgets import MultiModelSelect, SingleModelSelect, ModelFormset
+from .widgets import MultiModelSelect, SingleModelSelect, ModelFormset, \
+        ImageFormset
 from .tools import idstring_to_list, idlist_to_models
 
 
@@ -68,5 +69,13 @@ class ModelFormsetField(forms.Field):
             return mfs.forms
         else:
             raise forms.ValidationError(mfs.errors)
+
+class ImageFormsetField(forms.Field):
+    _is_jswidgets_field = True
+    widget = ImageFormset
+
+    def prepare_to_be_cleaned(self, field_name, form_data):
+        pass
+
 
 

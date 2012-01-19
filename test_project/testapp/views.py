@@ -1,15 +1,19 @@
 # Create your views here.
 
 from lib.decorators import template
-from .forms import AuthorForm, FactoryForm
-from .models import Author, Factory
+from .forms import AuthorForm, FactoryForm, FarmForm, AnimalForm
+from .models import Author, Factory, Farm, Animal
+
 
 @template("base.html")
 def demo(request):
     return {}
 
-@template("author.html")
-def author(request):
+
+
+
+@template("authors.html")
+def authors(request):
     if request.method == "POST":
         author_form = AuthorForm(request.POST)
         if author_form.is_valid():
@@ -27,8 +31,10 @@ def edit_author(request, author_id):
     pass
 
 
-@template("factory.html")
-def factory(request):
+
+
+@template("factories.html")
+def factories(request):
     if request.method == "POST":
         factory_form = FactoryForm(request.POST)
         if factory_form.is_valid():
@@ -52,4 +58,25 @@ def edit_factory(request, factory_id):
     return dict(
         factory_form = factory_form,
         factories = Factory.objects.all()
+        )
+
+
+
+
+@template("farms.html")
+def farms(request):
+    farm_form = FarmForm()
+    return dict(
+        farm_form = farm_form,
+        farms = Farm.objects.all(),
+        )
+
+
+@template("edit_farm.html")
+def edit_farm(request, farm_id):
+    farm = Farm.objects.get(id=farm_id)
+    farm_form = FarmForm()
+    return dict(
+        farm_form = farm_form,
+        farm = farm,
         )

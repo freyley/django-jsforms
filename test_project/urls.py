@@ -18,10 +18,14 @@ urlpatterns = patterns(
     (r'^admin/', include(admin.site.urls)),
     (r'^jswidgets-api/', include('jswidgets.urls')),
     url(r'^$', 'testapp.views.demo', name="demo"),
-    url(r'^authors$', 'testapp.views.author', name="authors"),
+    url(r'^authors$', 'testapp.views.authors', name="authors"),
     url(r'^authors/(?P<author_id>\d+)$', 'testapp.views.edit_author', name="edit_author"),
-    url(r'^factories$', 'testapp.views.factory', name="factories"),
+
+    url(r'^factories$', 'testapp.views.factories', name="factories"),
     url(r'^factories/(?P<factory_id>\d+)$', 'testapp.views.edit_factory', name="edit_factory"),
+
+    url(r'^farms$', 'testapp.views.farms', name="farms"),
+    url(r'^farms/(?P<farm_id>\d+)$', 'testapp.views.edit_farm', name="edit_farm"),
 
 )
 
