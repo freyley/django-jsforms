@@ -8,6 +8,9 @@ class Publisher(models.Model):
         return self.name
 
 
+
+
+
 class Book(models.Model):
     title = models.CharField(max_length=255)
 
@@ -28,6 +31,9 @@ class Author(models.Model):
         return n
 
 
+
+
+
 class BookFormat(models.Model):
     height = models.CharField(max_length=255)
     width = models.CharField(max_length=255)
@@ -45,4 +51,28 @@ class Factory(models.Model):
         return "address: %s with formats %s" % (
                 self.address,
                 ",".join([str(bf) for bf in self.book_formats.all()]),
+        )
+
+
+
+
+
+
+class Animal(models.Model):
+    more_info = models.TextField()
+    image = models.ImageField(max_length=255, upload_to="animal_pictures")
+
+    def __unicode__(self):
+        return "more_info: %s" % self.more_info
+
+class Farm(models.Model):
+    name = models.CharField(max_length=255)
+    ducks = models.ManyToManyField(Animal, blank=True, null=True, related_name="duck_set")
+    chickens = models.ManyToManyField(Animal, blank=True, null=True, related_name="chicken_set")
+
+    def __unicode__(self):
+        return "name: %s, with %d ducks and %d chickens" % (
+                self.name,
+                self.ducks.all().count(),
+                self.chickens.all().count()
         )
