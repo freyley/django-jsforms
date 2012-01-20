@@ -24,7 +24,7 @@ class BookFormatForm(forms.ModelForm):
 
 
 class FactoryForm(jsforms.ModelForm):
-    book_formats = jsfields.ModelFormsetField(
+    book_formats = jsfields.FormsetField(
             BookFormatForm, # allow passing in model instead of modelform
             format="ul",
             # extra=0,
@@ -43,6 +43,8 @@ class FactoryForm(jsforms.ModelForm):
         exclude = "book_formats"
 
 
+
+
 class AnimalForm(jsforms.ModelForm):
     image = jsfields.ThumbnailImageField()
     class Meta:
@@ -51,7 +53,7 @@ class AnimalForm(jsforms.ModelForm):
 
 class FarmForm(jsforms.ModelForm):
     image = jsfields.ThumbnailImageField()
-    animals = jsfields.ModelFormsetField(AnimalForm)
+    animals = jsfields.FormsetField(AnimalForm)
 
     class Meta:
         model = Farm

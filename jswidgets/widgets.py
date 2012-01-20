@@ -102,7 +102,7 @@ class MultiModelSelect(SingleModelSelect):
 
 
 
-class ModelFormset(forms.TextInput):
+class Formset(forms.TextInput):
 
     def __init__(self, form_class, *args, **kwargs):
         self.format = kwargs.pop('format', None)
@@ -112,20 +112,21 @@ class ModelFormset(forms.TextInput):
             self.format = 'template'
 
         self.form_class = form_class
-        super(ModelFormset, self).__init__(*args, **kwargs)
+        super(Formset, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
         field_name = self._field.save_to or name
-        mfs_factory = forms.models.modelformset_factory(
-                self.form_class._meta.model,
+        FSClass = forms.formsets.formset_factory(
+                self.form_class,
+                forms.models.BaseModelFormSet,
                 can_delete=True,
                 extra=self.extra)
-
+        FSClass.model = self.form_class._meta.model
         try:
             dataset = getattr(self._field._form.instance, field_name).all()
-            fs = mfs_factory(prefix="jswidgets-%s" % name, queryset=dataset)
+            fs = FSClass(prefix="jswidgets-%s" % name, queryset=dataset)
         except ValueError:
-            fs = mfs_factory(prefix="jswidgets-%s" % name, queryset=self.form_class._meta.model.objects.none())
+            fs = FSClass(prefix="jswidgets-%s" % name, queryset=self.form_class._meta.model.objects.none())
 
         script_open = '<script type="text/template" class="jswidgets-formsetfield-template" data-name="%s">' % name
         add_button = '<a class="jswidgets-formsetfield-addform-%s" href="#">add form</a>' % name

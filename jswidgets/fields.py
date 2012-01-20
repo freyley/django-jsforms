@@ -1,5 +1,5 @@
 from django import forms
-from .widgets import MultiModelSelect, SingleModelSelect, ModelFormset, \
+from .widgets import MultiModelSelect, SingleModelSelect, Formset, \
         ThumbnailImage
 from .tools import idstring_to_list, idlist_to_models
 
@@ -38,7 +38,7 @@ class MultiModelField(forms.ModelMultipleChoiceField):
         return idlist_to_models(ids, self.model)
 
 
-class ModelFormsetField(forms.Field):
+class FormsetField(forms.Field):
     _is_jswidgets_field = True
 
     def __init__(self, form_class, **kwargs):
@@ -50,8 +50,8 @@ class ModelFormsetField(forms.Field):
         widget_kwargs['extra'] = kwargs.pop('extra', 0)
         widget_kwargs['format'] = kwargs.pop('format', 'ul')
         widget_kwargs['template'] = kwargs.pop('template', None)
-        self.widget = ModelFormset(form_class, **widget_kwargs)
-        super(ModelFormsetField, self).__init__("some label", )
+        self.widget = Formset(form_class, **widget_kwargs)
+        super(FormsetField, self).__init__("some label", )
 
     def prepare_to_be_cleaned(self, field_name, form_data):
         self.field_name = field_name
@@ -61,14 +61,14 @@ class ModelFormsetField(forms.Field):
                 self.form_data[key] = val
 
     def clean(self, value):
-        mfs_class = forms.models.modelformset_factory(
-                self.form_class._meta.model, can_delete=True)
-        mfs = mfs_class(self.form_data, prefix='jswidgets-%s' % self.field_name)
+        fs_class = forms.formsets.formset_factory(
+                self.form_class, can_delete=True)
+        fs = fs_class(self.form_data, prefix='jswidgets-%s' % self.field_name)
 
-        if mfs.is_valid():
-            return mfs.forms
+        if fs.is_valid():
+            return fs.forms
         else:
-            raise forms.ValidationError(mfs.errors)
+            raise forms.ValidationError(fs.errors)
 
 class ThumbnailImageField(forms.Field):
     _is_jswidgets_field = True
