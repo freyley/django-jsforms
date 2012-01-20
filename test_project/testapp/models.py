@@ -67,12 +67,12 @@ class Animal(models.Model):
 
 class Farm(models.Model):
     name = models.CharField(max_length=255)
-    ducks = models.ManyToManyField(Animal, blank=True, null=True, related_name="duck_set")
-    chickens = models.ManyToManyField(Animal, blank=True, null=True, related_name="chicken_set")
+    image = models.ImageField(max_length=255, upload_to="farm_pictures")
+
+    animals = models.ManyToManyField(Animal, blank=True, null=True)
 
     def __unicode__(self):
-        return "name: %s, with %d ducks and %d chickens" % (
+        return "name: %s, with %d animals" % (
                 self.name,
-                self.ducks.all().count(),
-                self.chickens.all().count()
+                self.animals.all().count(),
         )

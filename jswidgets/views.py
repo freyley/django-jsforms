@@ -3,7 +3,7 @@ from django import forms
 class SearchForm(forms.Form):
     term = forms.CharField()
 
-from .decorators import jsonapi
+from .decorators import jsonapi, textarea_api
 
 @jsonapi
 def search(request, **kwargs):
@@ -23,3 +23,14 @@ def search(request, **kwargs):
     field_data = objs.values_list(search_field, 'id')
     vals = [{'label' : fd[0], 'id' : fd[1]} for fd in field_data]
     return vals
+
+
+@textarea_api
+def image_upload(request):
+    print request.FILES
+
+    return {
+        "id": 123,
+        "thumbnail_url":"/asdf/asdf/asdf/foo.png",
+    }
+

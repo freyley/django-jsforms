@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.db.models import get_model
 from django.conf.urls.defaults import patterns, url
-from .views import search
+from .views import search, image_upload
 urllist = []
 
 try:
@@ -16,5 +16,9 @@ try:
             },
             name="aw_search_%s_%s" % ( model._meta.app_label, model.__name__)))
 except AttributeError: pass
+
+urllist.append(url(r'image_upload/$',
+        image_upload,
+        name="jsforms_image_upload"))
 
 urlpatterns = patterns('', *urllist)

@@ -35,6 +35,12 @@ def jsonapi(fn):
                 mimetype='application/json')
     return to_json
 
+def textarea_api(fn):
+
+    def to_textarea(request, *args, **kwargs):
+        context_data = fn(request, *args, **kwargs)
+        return HttpResponse("<textarea>%s</textarea>" % json.dumps(context_data))
+    return to_textarea
 
 
 def render(template, data, request):

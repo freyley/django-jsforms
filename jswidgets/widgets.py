@@ -161,12 +161,7 @@ class ModelFormset(forms.TextInput):
 
 
 
-class ImageFormset(forms.TextInput):
-
-    def __init__(self, form, *args, **kwargs):
-        self.form = form()
-        super(ImageFormset, self).__init__(*args, **kwargs)
-
+class ThumbnailImage(forms.Widget):
 
     def render(self, name, value, attrs=None):
         new_attrs = attrs.copy()
@@ -178,23 +173,12 @@ class ImageFormset(forms.TextInput):
         css += css_class
         new_attrs['class'] = css
 
-        new_attrs['type'] = 'hidden'
-        hidden = super(ImageFormset, self).render(name, value, new_attrs)
-
         retval = '''
             <div class="%(css_class)s" id="%(css_class)s-%(name)s">
-               %(hidden)s
-               <ul class="%(css_class)s-images">put image data here</ul>
-            <script type="text/template" class="%(css_class)s-newform">
-                <form class="%(css_class)s-newform" action="%(action)s">
-                %(form)s
-                <input class="%(css_class)s" type="submit" value="save">
-                </form>
-            </script>
-            <button>upload new image</button>
+               <button>upload image</button>
             </div>
-        ''' % dict(css_class=css_class, name=name, hidden=hidden,
-                    form=self.form.as_ul(), action="this action unknown" )
+        ''' % dict(css_class=css_class, name=name, 
+                    action=reverse("jsforms_image_upload"))
         return retval
 
     def get_css_class(self):

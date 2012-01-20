@@ -44,14 +44,14 @@ class FactoryForm(jsforms.ModelForm):
 
 
 class AnimalForm(jsforms.ModelForm):
-
+    image = jsfields.ThumbnailImageField()
     class Meta:
         model = Animal
 
 
 class FarmForm(jsforms.ModelForm):
-    ducks = jsfields.ImageFormsetField(AnimalForm)
-    chickens = jsfields.ImageFormsetField(AnimalForm)
+    image = jsfields.ThumbnailImageField()
+    animals = jsfields.ModelFormsetField(AnimalForm)
 
     class Meta:
         model = Farm
