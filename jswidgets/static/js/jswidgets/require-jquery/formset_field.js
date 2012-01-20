@@ -41,15 +41,17 @@ define([], function() {
             old_str = "jswidgets-" + data.name + "-" + old_num + "-",
             new_str = "jswidgets-" + data.name + "-" + num + "-";
 
-        console.log(old_str, new_str);
         $.each(form.find("*"), function(_, elem) {
             var e = $(elem);
-            if(e.prop("for"))
-                e.prop("for", e.prop("for").replace(old_str, new_str));
-            if(e.prop("id"))
-                e.prop("id", e.prop("id").replace(old_str, new_str));
-            if(e.prop("name"))
-                e.prop("name", e.prop("name").replace(old_str, new_str));
+            $.each(["for", "id", "name"], function(_, attr) {
+                if(e.prop(attr))
+                    e.prop(attr, e.prop(attr).replace(old_str, new_str));
+            });
+
+            $.each(e.data(), function(key, val) {
+                if(typeof val === "string")
+                    e.data(key, val.replace(old_str, new_str));
+            });
         });
     };
 
@@ -57,7 +59,7 @@ define([], function() {
     var delete_form = function(form, data) {
         console.log("delete", form, data);
         var index = $.inArray(form, data.forms);
-        var id_field = form.find("#id_jswidgets-book_formats-" + index + "-id");
+        var id_field = form.find("#id_jswidgets-" + data.name + "-" + index + "-id");
 
         if(id_field.val() == "") {
             // form was created on this page

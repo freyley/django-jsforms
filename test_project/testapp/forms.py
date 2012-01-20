@@ -46,7 +46,7 @@ class FactoryForm(jsforms.ModelForm):
 
 
 class AnimalForm(jsforms.ModelForm):
-    image = jsfields.ThumbnailImageField()
+    image = jsfields.ThumbnailImageField(temporary_thumbnail="http://dummyimage.com/100x100")
     class Meta:
         model = Animal
 

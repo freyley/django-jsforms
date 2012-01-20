@@ -72,7 +72,14 @@ class FormsetField(forms.Field):
 
 class ThumbnailImageField(forms.Field):
     _is_jswidgets_field = True
-    widget = ThumbnailImage
+
+    def __init__(self, *args, **kwargs):
+        widget_kwargs = {}
+        for key in 'upload_text', 'change_text', 'temporary_thumbnail':
+            if key in kwargs:
+                widget_kwargs[key] = kwargs.pop(key)
+        self.widget = ThumbnailImage(**widget_kwargs)
+        super(ThumbnailImageField, self).__init__(*args, **kwargs)
 
     def prepare_to_be_cleaned(self, field_name, form_data):
         pass

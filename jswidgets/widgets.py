@@ -32,7 +32,7 @@ class SingleModelSelect(forms.TextInput):
             "aw_search_%s_%s" % (self.model._meta.app_label,
                                  self.model.__name__)
             )
-        new_attrs['data-target-id'] = new_attrs['id']
+        new_attrs['data-target_id'] = new_attrs['id']
         new_attrs['id'] = new_attrs['id'] + '_visible'
 
         visible = super(SingleModelSelect, self).render(name+"_visible", self.visible_value(value), new_attrs)
@@ -74,7 +74,7 @@ class MultiModelSelect(SingleModelSelect):
             field_data = [ { 'label' : getattr(model, display_field),
                              'id' : model.id,
                              } for model in models ]
-            existing_data = "data-existing-data='%s'" % urllib.quote(sj.dumps(field_data))
+            existing_data = "data-existing_data='%s'" % urllib.quote(sj.dumps(field_data))
         html.append('<ul class="itemlist" id="%s_itemlist" %s></ul>' % (attrs['id'], existing_data))
 
         # js templates
@@ -161,12 +161,19 @@ class Formset(forms.TextInput):
 
 
 
-
-class ThumbnailImage(forms.Widget):
+class ThumbnailImage(forms.TextInput):
+    """
+    Use this to upload an image and get a thumbnail back
+    """
+    def __init__(self, *args, **kwargs):
+        self.upload_text = kwargs.pop('upload_text', "upload image")
+        self.change_text = kwargs.pop("change_text", "change image")
+        self.temporary_thumbnail = kwargs.pop("temporary_thumbnail",
+                None)
+        super(ThumbnailImage, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
         new_attrs = attrs.copy()
-
         css_class = self.get_css_class()
         css = new_attrs.get('class', '')
         if css:
@@ -174,13 +181,32 @@ class ThumbnailImage(forms.Widget):
         css += css_class
         new_attrs['class'] = css
 
+        hidden_attrs = attrs.copy()
+        hidden_attrs['type'] = 'hidden'
+        hidden = super(ThumbnailImage, self).render(name, value, hidden_attrs)
+        # TODO: also if there's a thumbnail for the value
+        # not sure what value looks like yet
+        image_tag = ""
+        if self.temporary_thumbnail:
+            image_tag = '<img src="%s">' % self.temporary_thumbnail
+
+
         retval = '''
-            <div class="%(css_class)s" id="%(css_class)s-%(name)s">
-               <button>upload image</button>
-            </div>
+                %(hidden)s
+                %(image_tag)s
+               <button class="%(css_class)s"
+               data-hidden_id="%(hidden_id)s"
+               data-upload_url="%(action)s"
+               data-upload_image_text="%(upload_text)s"
+               data-change_image_text="%(change_text)s">upload image</button>
         ''' % dict(css_class=css_class, name=name, 
+                    hidden = hidden,
+                    hidden_id = new_attrs['id'],
+                    image_tag=image_tag,
+                    upload_text="upload image",
+                    change_text="change image",
                     action=reverse("jsforms_image_upload"))
         return retval
 
     def get_css_class(self):
-        return "jswidgets-imageformset"
+        return "jswidgets-thumbnailimage"
