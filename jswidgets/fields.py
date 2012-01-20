@@ -72,7 +72,10 @@ class ModelFormsetField(forms.Field):
 
 class ImageFormsetField(forms.Field):
     _is_jswidgets_field = True
-    widget = ImageFormset
+
+    def __init__(self, form_or_model, *args, **kwargs):
+        self.widget = ImageFormset(form_or_model)
+        super(ImageFormsetField, self).__init__(*args, **kwargs)
 
     def prepare_to_be_cleaned(self, field_name, form_data):
         pass

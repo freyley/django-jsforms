@@ -1,10 +1,12 @@
 define([
         "./multi_model_select", 
         "./formset_field", 
-        ], function(MMS, FSF) {
+        "./image_formset", 
+        ], function(MMS, FSF, IF) {
     // we're assuming jquery and jqueryUI exist - they SHOULD be loaded.
 
 
+    // TODO - put this in single_select.js
     function create_singleselect(elem) {
         $(elem).autocomplete({
             source: $(elem).data("sourceurl"),
@@ -14,10 +16,10 @@ define([
                 $("#"+target_id).val(ui.item.id);
             }
         });
-
     };
 
 
+    // TODO - put this in div_opener.js
     function create_divopener(elem) {
         var id = $(elem).data("opens");
         $("#"+id).hide();
@@ -37,7 +39,7 @@ define([
         });
     });
 
-
+    // TODO - does this help anything?
     return {
         create_singleselect: create_singleselect
     };

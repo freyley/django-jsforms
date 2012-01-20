@@ -163,25 +163,39 @@ class ModelFormset(forms.TextInput):
 
 class ImageFormset(forms.TextInput):
 
+    def __init__(self, form, *args, **kwargs):
+        self.form = form()
+        super(ImageFormset, self).__init__(*args, **kwargs)
+
+
     def render(self, name, value, attrs=None):
         new_attrs = attrs.copy()
 
+        css_class = self.get_css_class()
         css = new_attrs.get('class', '')
         if css:
             css += ' '
-        css += self.get_css_class()
+        css += css_class
         new_attrs['class'] = css
 
-        visible = super(SingleModelSelect, self).render(name+"_visible", self.visible_value(value), new_attrs)
+        new_attrs['type'] = 'hidden'
+        hidden = super(ImageFormset, self).render(name, value, new_attrs)
 
-        hidden_attrs = attrs.copy()
-        hidden_attrs['type'] = 'hidden'
-        hidden = super(SingleModelSelect, self).render(name, value, hidden_attrs)
-        return visible + hidden
-
-        return '''
-            <div id="jswidgets-imageformset-blah">
-                %s
-                form goes here
+        retval = '''
+            <div class="%(css_class)s" id="%(css_class)s-%(name)s">
+               %(hidden)s
+               <ul class="%(css_class)s-images">put image data here</ul>
+            <script type="text/template" class="%(css_class)s-newform">
+                <form class="%(css_class)s-newform" action="%(action)s">
+                %(form)s
+                <input class="%(css_class)s" type="submit" value="save">
+                </form>
+            </script>
+            <button>upload new image</button>
             </div>
-        ''' % (hidden)
+        ''' % dict(css_class=css_class, name=name, hidden=hidden,
+                    form=self.form.as_ul(), action="this action unknown" )
+        return retval
+
+    def get_css_class(self):
+        return "jswidgets-imageformset"
