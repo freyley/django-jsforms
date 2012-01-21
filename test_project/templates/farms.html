@@ -18,7 +18,14 @@
     <ul>
         {{ farm_form.as_ul }}
     </ul>
-    <input type="submit" value="save"/>
+    <input type="submit" value="save" class="btn"/>
+</form>
+
+<form action="{% url jsforms_image_upload %}" method="POST" enctype="multipart/form-data">
+
+    <input id="id_timage" name="timage" type="file">
+    <input type="submit" value="save" class="btn"/>
+
 </form>
 
 {% endblock %}

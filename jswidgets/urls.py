@@ -16,9 +16,11 @@ try:
             },
             name="aw_search_%s_%s" % ( model._meta.app_label, model.__name__)))
 except AttributeError: pass
-
-urllist.append(url(r'image_upload/$',
-        image_upload,
-        name="jsforms_image_upload"))
+try:
+    if settings.JSWIDGET_IMAGEUPLOAD_FEATURE:
+        urllist.append(url(r'image_upload/$',
+                image_upload,
+                name="jsforms_image_upload"))
+except AttributeError: pass
 
 urlpatterns = patterns('', *urllist)

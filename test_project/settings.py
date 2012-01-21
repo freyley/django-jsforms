@@ -89,7 +89,7 @@ TEMPLATE_DIRS = (
     os.path.abspath(os.path.dirname(__file__))+'/templates'
 )
 
-JSWIDGETS_MODELS = ( 
+JSWIDGETS_MODELS = (
     ("testapp.Book", "title"),
     ("testapp.Publisher", "name"),
     )
@@ -114,4 +114,8 @@ paths: {
     },
 priority: ["https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"]
 }'''
+
+
+JSWIDGET_IMAGEUPLOAD_FEATURE = True
+JSWIDGET_THUMBNAIL_SIZE = (100,100)
 
