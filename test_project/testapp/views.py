@@ -85,6 +85,7 @@ def farms(request):
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
+
 @template("edit_farm.html")
 def edit_farm(request, farm_id):
     farm = Farm.objects.get(id=farm_id)
@@ -98,7 +99,7 @@ def edit_farm(request, farm_id):
             pass
 
     else:
-        farm_form = FarmForm()
+        farm_form = FarmForm(instance=farm)
     return dict(
         farm_form = farm_form,
         farm = farm,

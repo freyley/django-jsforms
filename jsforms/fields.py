@@ -80,7 +80,7 @@ class ThumbnailImageField(forms.Field):
 
     def __init__(self, *args, **kwargs):
         widget_kwargs = {}
-        for key in 'upload_text', 'change_text', 'temporary_thumbnail':
+        for key in 'upload_text', 'change_text', 'temporary_thumbnail', 'thumbnail_generator':
             if key in kwargs:
                 widget_kwargs[key] = kwargs.pop(key)
         self.widget = ThumbnailImage(**widget_kwargs)

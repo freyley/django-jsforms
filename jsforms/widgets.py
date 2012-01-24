@@ -1,9 +1,13 @@
 from django import forms
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template import loader, Context
-from django.utils.safestring import mark_safe
-from .tools import idstring_to_list, idlist_to_models, get_display_field
 from django.utils import simplejson as sj
+from django.utils.safestring import mark_safe
+
+from .models import TemporaryUploadedImage
+from .tools import idstring_to_list, idlist_to_models, get_display_field
+from .utils import image_to_thumb_url
 
 import urllib
 
@@ -170,9 +174,12 @@ class ThumbnailImage(forms.TextInput):
         self.change_text = kwargs.pop("change_text", "change image")
         self.temporary_thumbnail = kwargs.pop("temporary_thumbnail",
                 None)
+        self.thumbnail_generator = kwargs.pop("thumbnail_generator", image_to_thumb_url)
         super(ThumbnailImage, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
+        print "NAME: %s, VALUE: %s" % (name, value)
+
         new_attrs = attrs.copy()
         css_class = self.get_css_class()
         css = new_attrs.get('class', '')
@@ -189,9 +196,23 @@ class ThumbnailImage(forms.TextInput):
         image_tag = ""
         if self.temporary_thumbnail:
             image_tag = '<img src="%s" id="%s_image_tag">' % (self.temporary_thumbnail, new_attrs['id'])
+        if value:
+            if type(value) == int:
+                tmp_img = TemporaryUploadedImage.objects.get(id=value)
+                image_tag = '<img src="%s" id="%s_image_tag">' % (
+                        tmp_img.timage.url,
+                        new_attrs['id'],
+                        )
+            else:
+                image_tag = '<img src="%s" id="%s_image_tag">' % (
+                        self.thumbnail_generator(name=name, image=value),
+                        new_attrs['id'],
+                        )
 
 
-        retval = '''
+
+
+        html = '''
                 %(hidden)s
                 %(image_tag)s
                <button class="%(css_class)s"
@@ -206,7 +227,7 @@ class ThumbnailImage(forms.TextInput):
                     upload_text="upload image",
                     change_text="change image",
                     action=reverse("jsforms_image_upload"))
-        return retval
+        return html
 
     def get_css_class(self):
         return "jsforms-thumbnailimage"
