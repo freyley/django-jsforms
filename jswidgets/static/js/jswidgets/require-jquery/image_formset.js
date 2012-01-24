@@ -14,6 +14,8 @@ function() {
                 hidden_id = button.data("hidden_id"),
                 image_id = hidden_id + "_image_tag";
 
+            button.html(button.data("change_image_text"));
+
             $("#" + image_id).remove();
             button.before(tmpl(image_tmpl, {
                 url: data.thumbnail_url,
