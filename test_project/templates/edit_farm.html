@@ -4,8 +4,6 @@
 {% block content %}
 
 <h1>Editing Farm</h1>
-{{ farm.name }}
-<img src="{{ MEDIA_URL }}{{ farm.image }}">
 <form method="POST">
     {% csrf_token %}
     <ul>

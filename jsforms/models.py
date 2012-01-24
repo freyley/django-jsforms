@@ -20,7 +20,7 @@ except AttributeError:
 class TemporaryUploadedImage(models.Model):
     timage = models.ImageField(max_length=500, upload_to="temporary_images")
 
-    def create_thumbnails(self, force=False):
+    def create_thumbnail(self, force=False):
         ''' Use PIC_THUMBNAILS to determine which thumbnails to create '''
         orig_path = path.join(settings.MEDIA_ROOT, self.timage.path)
 
@@ -42,4 +42,4 @@ class TemporaryUploadedImage(models.Model):
     def save(self, *args, **kwargs):
         super(TemporaryUploadedImage, self).save(*args, **kwargs)
         if PIL:
-            self.create_thumbnails()
+            self.create_thumbnail()

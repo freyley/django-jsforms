@@ -197,13 +197,14 @@ class ThumbnailImage(forms.TextInput):
         if self.temporary_thumbnail:
             image_tag = '<img src="%s" id="%s_image_tag">' % (self.temporary_thumbnail, new_attrs['id'])
         if value:
-            if type(value) == int:
-                tmp_img = TemporaryUploadedImage.objects.get(id=value)
+            try:
+                id = int(value)
+                tmp_img = TemporaryUploadedImage.objects.get(id=id)
                 image_tag = '<img src="%s" id="%s_image_tag">' % (
-                        tmp_img.timage.url,
+                        self.thumbnail_generator(name=name, image=tmp_img.timage),
                         new_attrs['id'],
                         )
-            else:
+            except ValueError:
                 image_tag = '<img src="%s" id="%s_image_tag">' % (
                         self.thumbnail_generator(name=name, image=value),
                         new_attrs['id'],
