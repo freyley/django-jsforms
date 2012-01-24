@@ -4,8 +4,9 @@ Copy of BaseModelFormSet from Django dev version (1.4 to-be)
 
 from __future__ import absolute_import
 
+from django.forms.models import ModelChoiceField
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
-from django.forms.formsets import BaseFormSet
+from django.forms.formsets import BaseFormSet, ManagementForm
 from django.forms.widgets import HiddenInput
 from django.utils.text import get_text_list
 from django.utils.translation import ugettext_lazy as _, ugettext
@@ -34,6 +35,26 @@ class BaseModelFormSet(BaseFormSet):
             extra = len(self.initial_extra)
         return extra + super(BaseModelFormSet, self).initial_form_count()
 
+    def _management_form(self):
+        """Returns the ManagementForm instance for this FormSet."""
+        data = self.data
+        if self.initial_extra:
+            data = self.data + self.initial_extra
+        if self.is_bound:
+            form = ManagementForm(data + self.initial_extra, auto_id=self.auto_id, prefix=self.prefix)
+            if not form.is_valid():
+                raise ValidationError('ManagementForm data is missing or has been tampered with')
+        else:
+            form = ManagementForm(auto_id=self.auto_id, prefix=self.prefix, initial={
+                TOTAL_FORM_COUNT: self.total_form_count(),
+                INITIAL_FORM_COUNT: self.initial_form_count(),
+                MAX_NUM_FORM_COUNT: self.max_num
+            })
+        return form
+    management_form = property(_management_form)
+
+
+   
     def _existing_object(self, pk):
         if not hasattr(self, '_object_dict'):
             self._object_dict = dict([(o.pk, o) for o in self.get_queryset()])
