@@ -161,8 +161,9 @@ class ModelForm(forms.ModelForm):
                 _old_save_m2m()
                 save_forms()
             self.save_m2m = save_m2m_2
+        return instance
 
-
+        
 class SearchForm(forms.Form):
     term = forms.CharField()
 
