@@ -4,10 +4,12 @@
 {% block content %}
 
 <h1>Editing Factory</h1>
+{{ farm.name }}
+<img src="{{ MEDIA_URL }}{{ farm.image }}">
 <form method="POST">
     {% csrf_token %}
     <ul>
-        {{ factory_form.as_ul }}
+        {{ farm_form.as_ul }}
     </ul>
     <input type="submit" value="save"/>
 </form>
