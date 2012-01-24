@@ -41,7 +41,7 @@ class BaseModelFormSet(BaseFormSet):
         if self.initial_extra:
             data = self.data + self.initial_extra
         if self.is_bound:
-            form = ManagementForm(data + self.initial_extra, auto_id=self.auto_id, prefix=self.prefix)
+            form = ManagementForm(data, auto_id=self.auto_id, prefix=self.prefix)
             if not form.is_valid():
                 raise ValidationError('ManagementForm data is missing or has been tampered with')
         else:
