@@ -188,7 +188,7 @@ class ThumbnailImage(forms.TextInput):
         # not sure what value looks like yet
         image_tag = ""
         if self.temporary_thumbnail:
-            image_tag = '<img src="%s">' % self.temporary_thumbnail
+            image_tag = '<img src="%s" id="%s_image_tag">' % (self.temporary_thumbnail, new_attrs['id'])
 
 
         retval = '''

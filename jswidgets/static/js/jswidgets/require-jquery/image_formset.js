@@ -3,13 +3,23 @@ define(
 function() {
 
     var form_tmpl = '<form id="<%= id %>" action="<%= action %>" style="display:none;" method="POST" enctype="multipart/form-data"><input type="file" name="timage"/></form>';
+    var image_tmpl = '<img src="<%= url %>" id="<%= id %>">'
 
     var upload_options = {
-        success: function(text) {
+        success: function(text, a, b, form) {
             // remove textarea tags
             text = text.substring(10,text.length-11)
-            var data = JSON.parse(text);
+            var data = JSON.parse(text),
+                button = $(form.data("button")),
+                image_id = button.data("hidden_id") + "_image_tag";
+
+            $("#" + image_id).remove();
+            button.before(tmpl(image_tmpl, {
+                url: data.thumbnail_url,
+                id: image_id
+            }));
             console.log(data);
+            console.log($("#" + image_id));
         }
     };
 
@@ -33,6 +43,7 @@ function() {
             form.find("input").click();
 
             form.ajaxForm(upload_options);
+            form.data("button", this);
 
             file_field.on("change", function() {
                 form.submit();

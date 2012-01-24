@@ -1,14 +1,9 @@
 from django import forms
 from . import models
-
-class SearchForm(forms.Form):
-    term = forms.CharField()
-
-class TemporaryUploadedImageForm(forms.ModelForm):
-    class Meta:
-        model = models.TemporaryUploadedImage
+from .forms import SearchForm, TemporaryUploadedImageForm
 
 from .decorators import jsonapi, textarea_api
+
 
 @jsonapi
 def search(request, **kwargs):
@@ -35,7 +30,9 @@ def image_upload(request):
     form = TemporaryUploadedImageForm(request.POST, request.FILES)
     if form.is_valid():
         tf = form.save()
-        return dict( id = tf.id, success = True,
-            thumbnail_url = "/asdf/foo.png")
+        return dict(
+                id = tf.id,
+                success = True,
+                thumbnail_url = tf.get_thumb_url())
     return dict( success = False, errors = form.errors)
 
