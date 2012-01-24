@@ -12,7 +12,7 @@ define([
             source: $(elem).data("sourceurl"),
             minLength: 2,
             select: function( event, ui ) {
-                var target_id = $(elem).data("target-id");
+                var target_id = $(elem).data("target_id");
                 $("#"+target_id).val(ui.item.id);
             }
         });

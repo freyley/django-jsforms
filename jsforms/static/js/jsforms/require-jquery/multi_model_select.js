@@ -81,12 +81,12 @@ var Itemlist = function(_, input) {
 
     // helpers
     input = $(input);
-    var id = input.data("target-id");
+    var id = input.data("target_id");
 
     var that = {
         input: input,
         url: input.data("sourceurl"),
-        id: input.data("target-id"),
+        id: input.data("target_id"),
         hidden_input: $("#" + id),
         display_list: $("#" + id + "_itemlist"),
         list_item_tmpl_id: id + "_list_item_template",
@@ -122,14 +122,14 @@ var Itemlist = function(_, input) {
         override_display_item_template(that);
 
     that.display_list.on("click", "a.jsforms-remove", function() {
-        var id = $(this).closest("li").data("jsforms-item-id");
+        var id = $(this).closest("li").data("jsforms_item_id");
         delete that.items[id];
         render_list(that);
         return false;
     });
 
     // add items from existing-data
-    var existing_data = that.display_list.data("existing-data");
+    var existing_data = that.display_list.data("existing_data");
     if(existing_data) {
         existing_data = decodeURIComponent(existing_data); // now json
         existing_data = $.parseJSON(existing_data); // now an array
