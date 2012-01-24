@@ -3,6 +3,7 @@ from django.forms.forms import BoundField as django_BoundField
 from django.utils.html import conditional_escape
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
+from . import models
 
 class BoundField(django_BoundField):
     def __init__(self, form, field, name):
@@ -167,3 +168,12 @@ class ModelForm(forms.ModelForm):
                 _old_save_m2m()
                 save_forms()
             self.save_m2m = save_m2m_2
+
+
+class SearchForm(forms.Form):
+    term = forms.CharField()
+
+
+class TemporaryUploadedImageForm(forms.ModelForm):
+    class Meta:
+        model = models.TemporaryUploadedImage

@@ -31,6 +31,10 @@ class TemporaryUploadedImage(models.Model):
         thumb.thumbnail(JSWIDGET_THUMBNAIL_SIZE)
         thumb.save(thumb_path, "JPEG", quality=80)
 
+    def get_thumb_url(self):
+        dir, file = path.split(self.timage.url)
+        return path.join(dir, "..", "temporary_thumbs", file)
+
     def get_thumb_path(self, orig_path):
         dir, file = path.split(orig_path)
         return path.join(dir, "..", "temporary_thumbs", file)

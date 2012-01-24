@@ -65,7 +65,12 @@ def edit_factory(request, factory_id):
 
 @template("farms.html")
 def farms(request):
-    farm_form = FarmForm()
+    if request.method == "POST":
+        farm_form = FarmForm(request.POST)
+        if farm_form.is_valid():
+            farm_form.save()
+    else:
+        farm_form = FarmForm()
     return dict(
         farm_form = farm_form,
         farms = Farm.objects.all(),
