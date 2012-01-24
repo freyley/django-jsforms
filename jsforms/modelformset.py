@@ -6,7 +6,9 @@ from __future__ import absolute_import
 
 from django.forms.models import ModelChoiceField
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
-from django.forms.formsets import BaseFormSet, ManagementForm
+from django.forms.formsets import (BaseFormSet, ManagementForm,
+                                TOTAL_FORM_COUNT, INITIAL_FORM_COUNT,
+                                MAX_NUM_FORM_COUNT)
 from django.forms.widgets import HiddenInput
 from django.utils.text import get_text_list
 from django.utils.translation import ugettext_lazy as _, ugettext
