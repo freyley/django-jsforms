@@ -114,7 +114,7 @@ class ModelForm(forms.ModelForm):
 
         for name, field in self.fields.items():
             try:
-                field._is_jswidgets_field
+                field._jswidgets_saves_as_forms
             except AttributeError:
                 continue
             field.prepare_to_be_cleaned(name, self.data)
@@ -126,7 +126,7 @@ class ModelForm(forms.ModelForm):
         jswidgets_formlists = {}
         for key, val in self.cleaned_data.items():
             try:
-                self.fields[key]._is_jswidgets_field
+                self.fields[key]._jswidgets_saves_as_forms
                 jswidgets_formlists[key] = val
             except AttributeError:
                 cleaned_data_minus_jswidgets[key] = val
@@ -135,9 +135,9 @@ class ModelForm(forms.ModelForm):
 
         def save_forms():
             for field_name, formlist in jswidgets_formlists.items():
-                if self.fields[field_name].save_to: 
+                try: 
                     model_field = self.fields[field_name].save_to
-                else:
+                except AttributeError:
                     model_field = field_name
                 obj_field = getattr(instance, model_field)
                 obj_field.clear()

@@ -17,6 +17,7 @@ class SingleModelField(forms.ModelChoiceField):
 
 
 class MultiModelField(forms.ModelMultipleChoiceField):
+    _is_jswidgets_field = True
 
     def __init__(self, *args, **kwargs):
         if not 'model' in kwargs:
@@ -41,6 +42,7 @@ class MultiModelField(forms.ModelMultipleChoiceField):
 
 class FormsetField(forms.Field):
     _is_jswidgets_field = True
+    _jswidgets_saves_as_forms = True
 
     def __init__(self, form_class, **kwargs):
         self.field_name = None
@@ -88,3 +90,6 @@ class ThumbnailImageField(forms.Field):
     def clean(self, value):
         tmp = TemporaryUploadedImage.objects.get(id=value)
         return tmp.timage.file
+
+    def clear(self, *args, **kwargs):
+        pass
