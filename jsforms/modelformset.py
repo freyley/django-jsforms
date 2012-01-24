@@ -1,6 +1,5 @@
 """
-Helper functions for creating Form classes from Django models
-and database field objects.
+Copy of BaseModelFormSet from Django dev version (1.4 to-be)
 """
 
 from __future__ import absolute_import
@@ -30,7 +29,10 @@ class BaseModelFormSet(BaseFormSet):
         """Returns the number of forms that are required in this FormSet."""
         if not (self.data or self.files):
             return len(self.get_queryset())
-        return super(BaseModelFormSet, self).initial_form_count()
+        extra = 0
+        if self.initial_extra:
+            extra = len(self.initial_extra)
+        return extra + super(BaseModelFormSet, self).initial_form_count()
 
     def _existing_object(self, pk):
         if not hasattr(self, '_object_dict'):
