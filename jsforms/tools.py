@@ -24,7 +24,7 @@ def idlist_to_models(ids, model):
 def get_display_field(model):
     searchstring = "%s.%s" % ( model._meta.app_label, model.__name__)
     try:
-        for mod, field in settings.JSWIDGETS_MODELS:
+        for mod, field in settings.JSFORMS_MODELS:
             if mod == searchstring:
                 return field
     except AttributeError: pass

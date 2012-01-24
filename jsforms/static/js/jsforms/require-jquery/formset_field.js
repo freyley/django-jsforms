@@ -8,7 +8,7 @@ define([], function() {
         data.total_forms = 0;
         data.forms = [];
 
-        $.each($(".jswidgets-formsetfield-form-" + data.name), function(_, form) {
+        $.each($(".jsforms-formsetfield-form-" + data.name), function(_, form) {
             var f = $(form);
             set_up_form_events(f, data);
             data.total_forms += 1;
@@ -17,7 +17,7 @@ define([], function() {
 
         update_management_form(data);
 
-        $("a.jswidgets-formsetfield-addform-" + data.name).click(function() {
+        $("a.jsforms-formsetfield-addform-" + data.name).click(function() {
             var form = $(data.template_text.replace(/__prefix__/g, data.total_forms));
             data.forms.push(form);
             set_up_form_events(form, data);
@@ -32,14 +32,14 @@ define([], function() {
 
 
     var update_management_form = function(data) {
-        $("#id_jswidgets-" + data.name + "-TOTAL_FORMS").val(data.total_forms);
+        $("#id_jsforms-" + data.name + "-TOTAL_FORMS").val(data.total_forms);
     };
 
 
     var decrement_form = function(form, num, data) {
         var old_num = num + 1,
-            old_str = "jswidgets-" + data.name + "-" + old_num + "-",
-            new_str = "jswidgets-" + data.name + "-" + num + "-";
+            old_str = "jsforms-" + data.name + "-" + old_num + "-",
+            new_str = "jsforms-" + data.name + "-" + num + "-";
 
         $.each(form.find("*"), function(_, elem) {
             var e = $(elem);
@@ -59,7 +59,7 @@ define([], function() {
     var delete_form = function(form, data) {
         console.log("delete", form, data);
         var index = $.inArray(form, data.forms);
-        var id_field = form.find("#id_jswidgets-" + data.name + "-" + index + "-id");
+        var id_field = form.find("#id_jsforms-" + data.name + "-" + index + "-id");
 
         if(id_field.val() == "") {
             // form was created on this page
@@ -75,7 +75,7 @@ define([], function() {
             update_management_form(data);
         } else {
             // form is bound
-            form.find("#id_jswidgets-" + data.name + "-" + index + "-DELETE").prop("checked", true);
+            form.find("#id_jsforms-" + data.name + "-" + index + "-DELETE").prop("checked", true);
             form.hide();
         }
     };
@@ -83,7 +83,7 @@ define([], function() {
 
     var set_up_form_events = function(form, data) {
         console.log("setting up form", form);
-        var link = $('<a href="#" class="jswidgets-formsetfield-delete">delete</a>');
+        var link = $('<a href="#" class="jsforms-formsetfield-delete">delete</a>');
         form.find("label[for$='DELETE']").hide();
         form.find("*[id$='DELETE']").hide().after(link);
         link.click(function() {
@@ -94,7 +94,7 @@ define([], function() {
 
 
     $(function() {
-        $.each($("script.jswidgets-formsetfield-template"), function(_, fsft) {
+        $.each($("script.jsforms-formsetfield-template"), function(_, fsft) {
             set_up_formsetfield(fsft);
         });
     });

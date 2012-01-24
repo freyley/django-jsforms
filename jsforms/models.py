@@ -8,7 +8,7 @@ except ImportError:
     PIL = None
     try:
         if settings.JSWIDGET_IMAGEUPLOAD_FEATURE:
-            raise Exception("JSWidgets did not find PIL. Either turn off the Image Upload Feature or install PIL.")
+            raise Exception("jsforms did not find PIL. Either turn off the Image Upload Feature or install PIL.")
     except AttributeError: pass
 
 try:

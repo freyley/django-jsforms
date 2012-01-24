@@ -9,25 +9,25 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         
         # Adding model 'TemporaryUploadedImage'
-        db.create_table('jswidgets_temporaryuploadedimage', (
+        db.create_table('jsforms_temporaryuploadedimage', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('timage', self.gf('django.db.models.fields.files.ImageField')(max_length=500)),
         ))
-        db.send_create_signal('jswidgets', ['TemporaryUploadedImage'])
+        db.send_create_signal('jsforms', ['TemporaryUploadedImage'])
 
 
     def backwards(self, orm):
         
         # Deleting model 'TemporaryUploadedImage'
-        db.delete_table('jswidgets_temporaryuploadedimage')
+        db.delete_table('jsforms_temporaryuploadedimage')
 
 
     models = {
-        'jswidgets.temporaryuploadedimage': {
+        'jsforms.temporaryuploadedimage': {
             'Meta': {'object_name': 'TemporaryUploadedImage'},
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'timage': ('django.db.models.fields.files.ImageField', [], {'max_length': '500'})
         }
     }
 
-    complete_apps = ['jswidgets']
+    complete_apps = ['jsforms']

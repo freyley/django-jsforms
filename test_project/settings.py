@@ -89,7 +89,7 @@ TEMPLATE_DIRS = (
     os.path.abspath(os.path.dirname(__file__))+'/templates'
 )
 
-JSWIDGETS_MODELS = (
+JSFORMS_MODELS = (
     ("testapp.Book", "title"),
     ("testapp.Publisher", "name"),
     )
@@ -102,7 +102,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'testapp',
-    'jswidgets',
+    'jsforms',
     'lib',
 )
 

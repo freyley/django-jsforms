@@ -9,15 +9,15 @@ INSTALLATION INSTRUCTIONS
 
 ---- add this to urls.py ----
 
-    # django-jswidgets
-    (r'^jswidgets-api/', include('jswidgets.urls')),
+    # django-jsforms
+    (r'^jsforms-api/', include('jsforms.urls')),
 
 
 
 ---- in settings.py... ----
 
 # add the following
-JSWIDGETS_MODELS = (
+JSFORMS_MODELS = (
     ("some_app.SomeModel", "some_field"),
     ("pages.Page", "title"),
 )
@@ -25,7 +25,7 @@ JSWIDGETS_MODELS = (
 # make sure the following are in INSTALLED_APPS
 INSTALLED_APPS = [
     'django.contrib.staticfiles',
-    'jswidgets',
+    'jsforms',
 ]
 
 # notes on django-staticfiles

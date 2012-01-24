@@ -29,7 +29,7 @@ function() {
 
     $(function() {
 
-        $("body").on("click", "button.jswidgets-thumbnailimage", function() {
+        $("body").on("click", "button.jsforms-thumbnailimage", function() {
             var id = $(this).data('hidden_id'),
                 form_id = id + "_form",
                 form_text = tmpl(form_tmpl, {

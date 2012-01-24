@@ -48,12 +48,12 @@ class SingleModelSelect(forms.TextInput):
             return ""
 
     def get_css_class(self):
-        return "jswidgets-singleselect"
+        return "jsforms-singleselect"
 
 class MultiModelSelect(SingleModelSelect):
 
     def __init__(self, model, *args, **kwargs):
-        self.list_item_template = "jswidgets/multimodelselect/list_item.js.tmpl"
+        self.list_item_template = "jsforms/multimodelselect/list_item.js.tmpl"
         self.dropdown_item_template = None
 
         for my_kwarg in ("list_item_template", "dropdown_item_template"):
@@ -98,7 +98,7 @@ class MultiModelSelect(SingleModelSelect):
 
 
     def get_css_class(self):
-        return "jswidgets-multiselect"
+        return "jsforms-multiselect"
 
 
 
@@ -124,15 +124,15 @@ class Formset(forms.TextInput):
         FSClass.model = self.form_class._meta.model
         try:
             dataset = getattr(self._field._form.instance, field_name).all()
-            fs = FSClass(prefix="jswidgets-%s" % name, queryset=dataset)
+            fs = FSClass(prefix="jsforms-%s" % name, queryset=dataset)
         except ValueError:
-            fs = FSClass(prefix="jswidgets-%s" % name, queryset=self.form_class._meta.model.objects.none())
+            fs = FSClass(prefix="jsforms-%s" % name, queryset=self.form_class._meta.model.objects.none())
 
-        script_open = '<script type="text/template" class="jswidgets-formsetfield-template" data-name="%s">' % name
-        add_button = '<a class="jswidgets-formsetfield-addform-%s" href="#">add form</a>' % name
+        script_open = '<script type="text/template" class="jsforms-formsetfield-template" data-name="%s">' % name
+        add_button = '<a class="jsforms-formsetfield-addform-%s" href="#">add form</a>' % name
 
         if self.format == 'ul':
-            open_ul = '<ul class="jswidgets-formsetfield-form-%s">' % name
+            open_ul = '<ul class="jsforms-formsetfield-form-%s">' % name
             r = "".join((
                     fs.management_form.as_ul(),
                     script_open,
@@ -149,7 +149,7 @@ class Formset(forms.TextInput):
         elif self.format == 'table':
             return '%s</tr><script type="text/template">%s</script>' % (fs.as_table(), fs.empty_form.as_table())
         elif self.format == 'p':
-            return '%s<script class="jswidgets-formsetfield" type="text/template">%s</script>' % (fs.as_p(), fs.empty_form.as_p())
+            return '%s<script class="jsforms-formsetfield" type="text/template">%s</script>' % (fs.as_p(), fs.empty_form.as_p())
         elif self.format == 'template':
             # TODO
             return "a template"
@@ -209,4 +209,4 @@ class ThumbnailImage(forms.TextInput):
         return retval
 
     def get_css_class(self):
-        return "jswidgets-thumbnailimage"
+        return "jsforms-thumbnailimage"

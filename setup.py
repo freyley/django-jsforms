@@ -7,14 +7,14 @@ long_description = (open('README.rst').read() +
                     open('TODO.rst').read())
 
 setup(
-    name='django-jswidgets',
+    name='django-jsforms',
     version='0.0.2',
-    description='Javascript Widgets for Django.',
+    description='Javascript Fields and Widgets for Django.',
     author='Jeff Schwaber, LoFi Art',
     author_email='freyley@gmail.com',
     long_description=long_description,
     url='',
-    packages=['jswidgets'],
+    packages=['jsforms'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
@@ -27,8 +27,9 @@ setup(
     zip_safe=False,
     #test_suite='tests.runtests.runtests',
     package_data={
-        'jswidgets': [
-            'static/jswidgets/js/*.js',
+        'jsforms': [
+            'static/jsforms/js/*.js',
+            '*.py',
         ]
     },
 )

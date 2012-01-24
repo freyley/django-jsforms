@@ -17,7 +17,7 @@ class SingleModelField(forms.ModelChoiceField):
 
 
 class MultiModelField(forms.ModelMultipleChoiceField):
-    _is_jswidgets_field = True
+    _is_jsforms_field = True
 
     def __init__(self, *args, **kwargs):
         if not 'model' in kwargs:
@@ -41,7 +41,7 @@ class MultiModelField(forms.ModelMultipleChoiceField):
 
 
 class FormsetField(forms.Field):
-    _is_jswidgets_field = True
+    _is_jsforms_field = True
     _jsforms_saves_as_forms = True
 
     def __init__(self, form_class, **kwargs):
@@ -62,13 +62,13 @@ class FormsetField(forms.Field):
             self.save_to = self.field_name
         self.form_data = {}
         for key, val in form_data.items():
-            if key.startswith('jswidgets-%s' % field_name):
+            if key.startswith('jsforms-%s' % field_name):
                 self.form_data[key] = val
 
     def clean(self, value):
         fs_class = forms.formsets.formset_factory(
                 self.form_class, can_delete=True)
-        fs = fs_class(self.form_data, prefix='jswidgets-%s' % self.field_name)
+        fs = fs_class(self.form_data, prefix='jsforms-%s' % self.field_name)
 
         if fs.is_valid():
             return fs.forms
@@ -76,7 +76,7 @@ class FormsetField(forms.Field):
             raise forms.ValidationError(fs.errors)
 
 class ThumbnailImageField(forms.Field):
-    _is_jswidgets_field = True
+    _is_jsforms_field = True
 
     def __init__(self, *args, **kwargs):
         widget_kwargs = {}

@@ -31,10 +31,10 @@ define([
 
 
     $(function() {
-        $.each($('.jswidgets-singleselect'), function(_, elem) {
+        $.each($('.jsforms-singleselect'), function(_, elem) {
             create_singleselect(elem);
         });
-        $.each($('.jswidgets-opener'), function(_, elem) {
+        $.each($('.jsforms-opener'), function(_, elem) {
             create_divopener(elem);
         });
     });

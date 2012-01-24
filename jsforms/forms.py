@@ -10,14 +10,6 @@ class BoundField(django_BoundField):
         super(BoundField, self).__init__(form, field, name)
         self.field._form = form
         self.field.widget._field = self.field
-    """
-    def value(self):
-        try:
-            self.field._is_jswidgets_field
-            return "foobar"
-        except AttributeError: pass
-        return super(BoundField, self).value()
-    """
 
 class ModelForm(forms.ModelForm):
     bound_field_class = BoundField
@@ -114,7 +106,7 @@ class ModelForm(forms.ModelForm):
 
         for name, field in self.fields.items():
             try:
-                field._is_jswidgets_field
+                field._is_jsforms_field_
             except AttributeError:
                 continue
             field.prepare_to_be_cleaned(name, self.data)
@@ -122,19 +114,19 @@ class ModelForm(forms.ModelForm):
         super(ModelForm, self).full_clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        cleaned_data_minus_jswidgets = {}
-        jswidgets_formlists = {}
+        cleaned_data_minus_formsavers = {}
+        formsavers_formlists = {}
         for key, val in self.cleaned_data.items():
             try:
                 self.fields[key]._jsforms_saves_as_forms
-                jswidgets_formlists[key] = val
+                formsavers_formlists[key] = val
             except AttributeError:
-                cleaned_data_minus_jswidgets[key] = val
-        self.cleaned_data = cleaned_data_minus_jswidgets
+                cleaned_data_minus_formsavers[key] = val
+        self.cleaned_data = cleaned_data_minus_formsavers
         instance = super(ModelForm, self).save(*args, **kwargs)
 
         def save_forms():
-            for field_name, formlist in jswidgets_formlists.items():
+            for field_name, formlist in formsavers_formlists.items():
 
                 try: 
                     model_field = self.fields[field_name].save_to
