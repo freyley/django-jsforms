@@ -3,6 +3,7 @@ from django.forms.forms import BoundField as django_BoundField
 from django.utils.html import conditional_escape
 from django.utils.encoding import force_unicode
 from django.utils.safestring import mark_safe
+from django.db import transaction
 from . import models
 
 class BoundField(django_BoundField):
@@ -112,57 +113,63 @@ class ModelForm(forms.ModelForm):
             field.prepare_to_be_cleaned(name, self.data)
 
         super(ModelForm, self).full_clean(*args, **kwargs)
+    
 
+    @transaction.commit_manually
     def save(self, *args, **kwargs):
-        cleaned_data_minus_formsavers = {}
-        formsavers_formlists = {}
-        for key, val in self.cleaned_data.items():
-            try:
-                self.fields[key]._jsforms_saves_as_forms
-                formsavers_formlists[key] = val
-            except AttributeError:
-                cleaned_data_minus_formsavers[key] = val
-        self.cleaned_data = cleaned_data_minus_formsavers
-        instance = super(ModelForm, self).save(*args, **kwargs)
-
-        def save_forms():
-            for field_name, formlist in formsavers_formlists.items():
-
-                try: 
-                    model_field = self.fields[field_name].save_to
+        try:
+            cleaned_data_minus_formsavers = {}
+            formsavers_formlists = {}
+            for key, val in self.cleaned_data.items():
+                try:
+                    self.fields[key]._jsforms_saves_as_forms
+                    formsavers_formlists[key] = val
                 except AttributeError:
-                    model_field = field_name
-                obj_field = getattr(instance, model_field)
-                obj_field.clear()
-                for form in formlist:
-                    if hasattr(form, 'is_empty'):
-                        if callable(form.is_empty):
-                            if form.is_empty():
-                                continue
+                    cleaned_data_minus_formsavers[key] = val
+            self.cleaned_data = cleaned_data_minus_formsavers
+            instance = super(ModelForm, self).save(*args, **kwargs)
+
+            def save_forms():
+                for field_name, formlist in formsavers_formlists.items():
+
+                    try: 
+                        model_field = self.fields[field_name].save_to
+                    except AttributeError:
+                        model_field = field_name
+                    obj_field = getattr(instance, model_field)
+                    obj_field.clear()
+                    for form in formlist:
+                        if hasattr(form, 'is_empty'):
+                            if callable(form.is_empty):
+                                if form.is_empty():
+                                    continue
+                            else:
+                                if form.is_empty:
+                                    continue
                         else:
-                            if form.is_empty:
+                            if not form.cleaned_data:
                                 continue
-                    else:
-                        if not form.cleaned_data:
-                            continue
-                    if form.cleaned_data['DELETE']:
-                        # TODO: if we have delete-removed, delete this object
-                        pass
-                    else:
-                        obj_field.add(form.save())
+                        if form.cleaned_data['DELETE']:
+                            # TODO: if we have delete-removed, delete this object
+                            pass
+                        else:
+                            obj_field.add(form.save())
 
-        commit = kwargs.get('commit', True)
-        if commit:
-            save_forms()
-            print "commit was true"
-        else:
-            _old_save_m2m = self.save_m2m
-            def save_m2m_2():
-                _old_save_m2m()
+            commit = kwargs.get('commit', True)
+            if commit:
                 save_forms()
-            self.save_m2m = save_m2m_2
-        return instance
-
+                print "commit was true"
+            else:
+                _old_save_m2m = self.save_m2m
+                def save_m2m_2():
+                    _old_save_m2m()
+                    save_forms()
+                self.save_m2m = save_m2m_2
+            transaction.commit()
+            return instance
+        except Exception, e:
+            transaction.rollback()
+            raise e
         
 class SearchForm(forms.Form):
     term = forms.CharField()
