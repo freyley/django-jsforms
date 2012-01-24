@@ -40,6 +40,7 @@ class MultiModelField(forms.ModelMultipleChoiceField):
 
 class FormsetField(forms.Field):
     _is_jswidgets_field = True
+    _jsforms_saves_as_forms = True
 
     def __init__(self, form_class, **kwargs):
         self.field_name = None

@@ -125,7 +125,7 @@ class ModelForm(forms.ModelForm):
         jswidgets_formlists = {}
         for key, val in self.cleaned_data.items():
             try:
-                self.fields[key]._is_jswidgets_field
+                self.fields[key]._jsforms_saves_as_forms
                 jswidgets_formlists[key] = val
             except AttributeError:
                 cleaned_data_minus_jswidgets[key] = val
