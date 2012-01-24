@@ -21,7 +21,7 @@ class BoundField(django_BoundField):
 
 class ModelForm(forms.ModelForm):
     bound_field_class = BoundField
-
+    
     def __iter__(self):
         for name, field in self.fields.items():
             yield self.bound_field_class(self, field, name)
@@ -114,7 +114,7 @@ class ModelForm(forms.ModelForm):
 
         for name, field in self.fields.items():
             try:
-                field._jswidgets_saves_as_forms
+                field._is_jswidgets_field
             except AttributeError:
                 continue
             field.prepare_to_be_cleaned(name, self.data)
@@ -135,6 +135,7 @@ class ModelForm(forms.ModelForm):
 
         def save_forms():
             for field_name, formlist in jswidgets_formlists.items():
+
                 try: 
                     model_field = self.fields[field_name].save_to
                 except AttributeError:

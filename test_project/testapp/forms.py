@@ -53,7 +53,7 @@ class AnimalForm(jsforms.ModelForm):
 
 class FarmForm(jsforms.ModelForm):
     image = jsfields.ThumbnailImageField()
-    # animals = jsfields.FormsetField(AnimalForm)
+    animals = jsfields.FormsetField(AnimalForm)
 
     class Meta:
         model = Farm

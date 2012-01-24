@@ -39,6 +39,7 @@ def factories(request):
         factory_form = FactoryForm(request.POST)
         if factory_form.is_valid():
             factory_form.save()
+
     else:
         factory_form = FactoryForm()
     return dict(
@@ -53,6 +54,9 @@ def edit_factory(request, factory_id):
         factory_form = FactoryForm(request.POST, instance=factory)
         if factory_form.is_valid():
             factory_form.save()
+        else:
+            # put an ipdb here?
+            pass
     else:
         factory_form = FactoryForm(instance=factory)
     return dict(
@@ -69,18 +73,29 @@ def farms(request):
         farm_form = FarmForm(request.POST)
         if farm_form.is_valid():
             farm_form.save()
-    else:
         farm_form = FarmForm()
     return dict(
         farm_form = farm_form,
         farms = Farm.objects.all(),
         )
 
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 @template("edit_farm.html")
 def edit_farm(request, farm_id):
     farm = Farm.objects.get(id=farm_id)
-    farm_form = FarmForm()
+    if request.method == "POST":
+        farm_form = FarmForm(instance=farm, data=request.POST)
+        if farm_form.is_valid():
+            farm_form.save()
+            return HttpResponseRedirect(reverse("edit_farm", args=[farm.id]))
+        else:
+            # put an ipdb here?
+            pass
+
+    else:
+        farm_form = FarmForm()
     return dict(
         farm_form = farm_form,
         farm = farm,

@@ -48,7 +48,7 @@ class FormsetField(forms.Field):
         self.field_name = None
         self.form_data = None
         self.form_class = form_class
-        self.save_to = kwargs.pop('save_to', self.field_name)
+        self.save_to = kwargs.pop('save_to', None)
         widget_kwargs = {}
         widget_kwargs['extra'] = kwargs.pop('extra', 0)
         widget_kwargs['format'] = kwargs.pop('format', 'ul')
@@ -58,6 +58,8 @@ class FormsetField(forms.Field):
 
     def prepare_to_be_cleaned(self, field_name, form_data):
         self.field_name = field_name
+        if not self.save_to:
+            self.save_to = self.field_name
         self.form_data = {}
         for key, val in form_data.items():
             if key.startswith('jswidgets-%s' % field_name):
