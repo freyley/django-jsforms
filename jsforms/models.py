@@ -7,14 +7,14 @@ try:
 except ImportError:
     PIL = None
     try:
-        if settings.JSWIDGET_IMAGEUPLOAD_FEATURE:
+        if settings.JSFORMS_IMAGEUPLOAD_FEATURE:
             raise Exception("jsforms did not find PIL. Either turn off the Image Upload Feature or install PIL.")
     except AttributeError: pass
 
 try:
-    JSWIDGET_THUMBNAIL_SIZE = settings.JSWIDGET_THUMBNAIL_SIZE
+    JSFORMS_THUMBNAIL_SIZE = settings.JSFORMS_THUMBNAIL_SIZE
 except AttributeError:
-    JSWIDGET_THUMBNAIL_SIZE = (45,45)
+    JSFORMS_THUMBNAIL_SIZE = (45,45)
 
 
 class TemporaryUploadedImage(models.Model):
@@ -28,7 +28,7 @@ class TemporaryUploadedImage(models.Model):
 
         # Create thumbnail
         thumb = PIL.open(orig_path)
-        thumb.thumbnail(JSWIDGET_THUMBNAIL_SIZE)
+        thumb.thumbnail(JSFORMS_THUMBNAIL_SIZE)
         thumb.save(thumb_path, "JPEG", quality=80)
 
     def get_thumb_url(self):

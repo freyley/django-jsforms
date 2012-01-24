@@ -116,6 +116,6 @@ priority: ["https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"]
 }'''
 
 
-JSWIDGET_IMAGEUPLOAD_FEATURE = True
-JSWIDGET_THUMBNAIL_SIZE = (100,100)
+JSFORMS_IMAGEUPLOAD_FEATURE = True
+JSFORMS_THUMBNAIL_SIZE = (100,100)
 

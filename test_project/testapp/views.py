@@ -73,7 +73,10 @@ def farms(request):
         farm_form = FarmForm(request.POST)
         if farm_form.is_valid():
             farm_form.save()
+            farm_form = FarmForm()
+    else:
         farm_form = FarmForm()
+
     return dict(
         farm_form = farm_form,
         farms = Farm.objects.all(),
