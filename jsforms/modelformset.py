@@ -6,7 +6,9 @@ from __future__ import absolute_import
 
 from django.forms.models import ModelChoiceField
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
-from django.forms.formsets import BaseFormSet, ManagementForm
+from django.forms.formsets import (BaseFormSet, ManagementForm,
+                                TOTAL_FORM_COUNT, INITIAL_FORM_COUNT,
+                                MAX_NUM_FORM_COUNT)
 from django.forms.widgets import HiddenInput
 from django.utils.text import get_text_list
 from django.utils.translation import ugettext_lazy as _, ugettext
@@ -41,7 +43,7 @@ class BaseModelFormSet(BaseFormSet):
         if self.initial_extra:
             data = self.data + self.initial_extra
         if self.is_bound:
-            form = ManagementForm(data + self.initial_extra, auto_id=self.auto_id, prefix=self.prefix)
+            form = ManagementForm(data, auto_id=self.auto_id, prefix=self.prefix)
             if not form.is_valid():
                 raise ValidationError('ManagementForm data is missing or has been tampered with')
         else:
