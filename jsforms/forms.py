@@ -106,7 +106,7 @@ class ModelForm(forms.ModelForm):
 
         for name, field in self.fields.items():
             try:
-                field._is_jsforms_field_
+                field._is_jsforms_field
             except AttributeError:
                 continue
             field.prepare_to_be_cleaned(name, self.data)
