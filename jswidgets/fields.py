@@ -2,6 +2,7 @@ from django import forms
 from .widgets import MultiModelSelect, SingleModelSelect, Formset, \
         ThumbnailImage
 from .tools import idstring_to_list, idlist_to_models
+from .models import TemporaryUploadedImage
 
 
 class SingleModelField(forms.ModelChoiceField):
@@ -83,3 +84,7 @@ class ThumbnailImageField(forms.Field):
 
     def prepare_to_be_cleaned(self, field_name, form_data):
         pass
+
+    def clean(self, value):
+        tmp = TemporaryUploadedImage.objects.get(id=value)
+        return tmp.timage.file

@@ -11,15 +11,16 @@ function() {
             text = text.substring(10,text.length-11)
             var data = JSON.parse(text),
                 button = $(form.data("button")),
-                image_id = button.data("hidden_id") + "_image_tag";
+                hidden_id = button.data("hidden_id"),
+                image_id = hidden_id + "_image_tag";
 
             $("#" + image_id).remove();
             button.before(tmpl(image_tmpl, {
                 url: data.thumbnail_url,
                 id: image_id
             }));
-            console.log(data);
-            console.log($("#" + image_id));
+
+            $("#" + hidden_id).val(data.id);
         }
     };
 
