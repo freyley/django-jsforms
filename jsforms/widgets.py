@@ -206,7 +206,7 @@ class ThumbnailImage(forms.TextInput):
                         self.thumbnail_generator(name=name, image=tmp_img.timage),
                         new_attrs['id'],
                         )
-            except ValueError:
+            except (ValueError, TypeError):
                 image_tag = '<img src="%s" id="%s_image_tag">' % (
                         self.thumbnail_generator(name=name, image=value),
                         new_attrs['id'],

@@ -22,7 +22,7 @@ class TemporaryUploadedImage(models.Model):
 
     def create_thumbnail(self, force=False):
         ''' Use PIC_THUMBNAILS to determine which thumbnails to create '''
-        orig_path = path.join(settings.MEDIA_ROOT, self.timage.path)
+        orig_path = path.join(self.timage.path)
 
         thumb_path = self.get_thumb_path(orig_path)
 
@@ -33,7 +33,7 @@ class TemporaryUploadedImage(models.Model):
 
     def get_thumb_url(self):
         dir, file = path.split(self.timage.url)
-        return path.join(dir, "..", "temporary_thumbs", file)
+        return path.join(settings.MEDIA_URL, "temporary_thumbs", file)
 
     def get_thumb_path(self, orig_path):
         dir, file = path.split(orig_path)
