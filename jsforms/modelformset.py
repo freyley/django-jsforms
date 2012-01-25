@@ -41,7 +41,12 @@ class BaseModelFormSet(BaseFormSet):
         """Returns the ManagementForm instance for this FormSet."""
         data = self.data
         if self.initial_extra:
-            data = self.data + self.initial_extra
+            total_form_count_keyname = '%s_%s' % (self.prefix, TOTAL_FORM_COUNT)
+            if total_form_count_keyname in data:
+                data[total_form_count_keyname] += len(self.initial_extra)
+            else:
+                data[total_form_count_keyname] = len(self.initial_extra)
+                
         if self.is_bound:
             form = ManagementForm(data, auto_id=self.auto_id, prefix=self.prefix)
             if not form.is_valid():

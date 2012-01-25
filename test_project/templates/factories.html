@@ -15,9 +15,6 @@
 <h1>Create a new Factory</h1>
 <form method="POST">
     {% csrf_token %}
-    {% if factory_form.errors %}
-      <h3>errors</h3>{{ factory_form.errors }}
-    {% endif %}
     <ul>
         {{ factory_form.as_ul }}
     </ul>

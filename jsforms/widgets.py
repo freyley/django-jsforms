@@ -8,6 +8,7 @@ from django.utils.safestring import mark_safe
 from .models import TemporaryUploadedImage
 from .tools import idstring_to_list, idlist_to_models, get_display_field
 from .utils import image_to_thumb_url
+from .modelformset import BaseModelFormSet
 
 import urllib
 
@@ -122,15 +123,21 @@ class Formset(forms.TextInput):
         field_name = self._field.save_to or name
         FSClass = forms.formsets.formset_factory(
                 self.form_class,
-                forms.models.BaseModelFormSet,
+                BaseModelFormSet,
                 can_delete=True,
                 extra=self.extra)
         FSClass.model = self.form_class._meta.model
+        kwargset = { 'prefix' : 'jsforms-%s' % name }
+
         try:
             dataset = getattr(self._field._form.instance, field_name).all()
-            fs = FSClass(prefix="jsforms-%s" % name, queryset=dataset)
+            kwargset['queryset'] = dataset
         except ValueError:
-            fs = FSClass(prefix="jsforms-%s" % name, queryset=self.form_class._meta.model.objects.none())
+            kwargset['queryset'] = self.form_class._meta.model.objects.none()
+        if self._field._form.is_bound and not self._field._form.is_valid():
+            kwargset['initial'] = self._field.form_data
+        kwargset['initial'] = [dict(height=123, width=345, max_pages=456)]
+        fs = FSClass(**kwargset)
 
         script_open = '<script type="text/template" class="jsforms-formsetfield-template" data-name="%s">' % name
         add_button = '<a class="jsforms-formsetfield-addform-%s" href="#">add form</a>' % name
@@ -160,11 +167,6 @@ class Formset(forms.TextInput):
 
 
 
-
-
-
-
-
 class ThumbnailImage(forms.TextInput):
     """
     Use this to upload an image and get a thumbnail back
@@ -178,7 +180,7 @@ class ThumbnailImage(forms.TextInput):
         super(ThumbnailImage, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
-        print "NAME: %s, VALUE: %s" % (name, value)
+        # print "NAME: %s, VALUE: %s" % (name, value)
 
         new_attrs = attrs.copy()
         css_class = self.get_css_class()
@@ -209,9 +211,6 @@ class ThumbnailImage(forms.TextInput):
                         self.thumbnail_generator(name=name, image=value),
                         new_attrs['id'],
                         )
-
-
-
 
         html = '''
                 %(hidden)s
