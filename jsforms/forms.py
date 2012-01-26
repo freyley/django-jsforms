@@ -120,11 +120,15 @@ class ModelForm(forms.ModelForm):
         try:
             cleaned_data_minus_formsavers = {}
             formsavers_formlists = {}
+            print("entering loop")
             for key, val in self.cleaned_data.items():
-                try:
-                    self.fields[key]._jsforms_saves_as_forms
+                add_to_clean = True
+                save_as_forms = getattr(self.fields[key], '_jsforms_saves_as_forms', False)
+                if save_as_forms:
                     formsavers_formlists[key] = val
-                except AttributeError:
+                    add_to_clean = False
+                    print("save_as_forms")
+                if add_to_clean:
                     cleaned_data_minus_formsavers[key] = val
             self.cleaned_data = cleaned_data_minus_formsavers
             instance = super(ModelForm, self).save(*args, **kwargs)
@@ -153,7 +157,8 @@ class ModelForm(forms.ModelForm):
                             # TODO: if we have delete-removed, delete this object
                             pass
                         else:
-                            obj_field.add(form.save())
+                            formobj = form.save()
+                            obj_field.add(formobj)
 
             commit = kwargs.get('commit', True)
             if commit:

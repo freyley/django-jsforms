@@ -24,7 +24,7 @@ def upload_to(instance, fullpath):
     if s3:
         path = os.path.join(
             'jswidgets/temporary_images',
-            str(int(datetime.datetime.now().strftime("%s")) * 1000),
+            str(int(datetime.datetime.now().strftime("%s"))),
             filename
             )
     else:

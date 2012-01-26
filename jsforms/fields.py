@@ -4,6 +4,10 @@ from .widgets import MultiModelSelect, SingleModelSelect, Formset, \
 from .tools import idstring_to_list, idlist_to_models
 from .models import TemporaryUploadedImage
 from django.core.files.storage import default_storage
+#from .modelformset import BaseModelFormSet
+
+import pprint
+pp = pprint.PrettyPrinter(indent=2)
 
 class SingleModelField(forms.ModelChoiceField):
     def __init__(self, *args, **kwargs):
@@ -57,6 +61,7 @@ class FormsetField(forms.Field):
         super(FormsetField, self).__init__("some label", )
 
     def prepare_to_be_cleaned(self, field_name, form_data):
+        print "prepare_to_be_cleaned %s" % field_name
         self.field_name = field_name
         if not self.save_to:
             self.save_to = self.field_name
@@ -66,10 +71,15 @@ class FormsetField(forms.Field):
                 self.form_data[key] = val
 
     def clean(self, value):
-        fs_class = forms.formsets.formset_factory(
-                self.form_class, can_delete=True)
-        fs = fs_class(self.form_data, prefix='jsforms-%s' % self.field_name)
+        print "clean %s" % value
+        pp.pprint(self.form_data)
 
+        FSClass = forms.formsets.formset_factory(
+                self.form_class, 
+                forms.models.BaseModelFormSet,
+                can_delete=True)
+        FSClass.model = self.form_class._meta.model
+        fs = FSClass(self.form_data, prefix='jsforms-%s' % self.field_name)
         if fs.is_valid():
             return fs.forms
         else:
@@ -87,17 +97,17 @@ class ThumbnailImageField(forms.Field):
         super(ThumbnailImageField, self).__init__(*args, **kwargs)
 
     def prepare_to_be_cleaned(self, field_name, form_data):
-        pass
+        self.field_name = field_name
 
-    def clean(self, value):
+    def clean(self, value, initial=None):
         try:
             tmp = TemporaryUploadedImage.objects.get(id=value)
             return tmp.timage.file
         except ValueError:
-            import ipdb; ipdb.set_trace()
-            # TODO - this is god awful.
             try:
-                default_storage.open(value)
+                opened_file = default_storage.open(value)
+                return opened_file
+
             except IOError, ioe:
                 raise forms.ValidationError("Image failed %s" % str(ioe))
 

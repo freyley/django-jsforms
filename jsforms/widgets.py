@@ -8,7 +8,7 @@ from django.utils.safestring import mark_safe
 from .models import TemporaryUploadedImage
 from .tools import idstring_to_list, idlist_to_models, get_display_field
 from .utils import get_or_create_thumbnail
-from .modelformset import BaseModelFormSet
+#from .modelformset import BaseModelFormSet
 
 import urllib
 
@@ -123,7 +123,7 @@ class Formset(forms.TextInput):
         field_name = self._field.save_to or name
         FSClass = forms.formsets.formset_factory(
                 self.form_class,
-                BaseModelFormSet,
+                forms.models.BaseModelFormSet,
                 can_delete=True,
                 extra=self.extra)
         FSClass.model = self.form_class._meta.model
