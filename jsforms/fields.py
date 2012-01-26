@@ -3,8 +3,7 @@ from .widgets import MultiModelSelect, SingleModelSelect, Formset, \
         ThumbnailImage
 from .tools import idstring_to_list, idlist_to_models
 from .models import TemporaryUploadedImage
-from django.core.files import File
-
+from django.core.files.storage import default_storage
 
 class SingleModelField(forms.ModelChoiceField):
     def __init__(self, *args, **kwargs):
@@ -81,7 +80,7 @@ class ThumbnailImageField(forms.Field):
 
     def __init__(self, *args, **kwargs):
         widget_kwargs = {}
-        for key in 'upload_text', 'change_text', 'temporary_thumbnail', 'thumbnail_generator':
+        for key in 'upload_text', 'change_text', 'temporary_thumbnail':
             if key in kwargs:
                 widget_kwargs[key] = kwargs.pop(key)
         self.widget = ThumbnailImage(**widget_kwargs)
@@ -95,9 +94,12 @@ class ThumbnailImageField(forms.Field):
             tmp = TemporaryUploadedImage.objects.get(id=value)
             return tmp.timage.file
         except ValueError:
+            import ipdb; ipdb.set_trace()
             # TODO - this is god awful.
-            f = open(value)
-            return File(f)
+            try:
+                default_storage.open(value)
+            except IOError, ioe:
+                raise forms.ValidationError("Image failed %s" % str(ioe))
 
     def clear(self, *args, **kwargs):
         pass

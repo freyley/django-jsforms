@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 
 from .models import TemporaryUploadedImage
 from .tools import idstring_to_list, idlist_to_models, get_display_field
-from .utils import image_to_thumb_url
+from .utils import get_or_create_thumbnail
 from .modelformset import BaseModelFormSet
 
 import urllib
@@ -176,7 +176,6 @@ class ThumbnailImage(forms.TextInput):
         self.change_text = kwargs.pop("change_text", "change image")
         self.temporary_thumbnail = kwargs.pop("temporary_thumbnail",
                 None)
-        self.thumbnail_generator = kwargs.pop("thumbnail_generator", image_to_thumb_url)
         super(ThumbnailImage, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
@@ -203,12 +202,12 @@ class ThumbnailImage(forms.TextInput):
                 id = int(value)
                 tmp_img = TemporaryUploadedImage.objects.get(id=id)
                 image_tag = '<img src="%s" id="%s_image_tag">' % (
-                        self.thumbnail_generator(name=name, image=tmp_img.timage),
+                        get_or_create_thumbnail(name=name, image=tmp_img.timage),
                         new_attrs['id'],
                         )
             except (ValueError, TypeError):
                 image_tag = '<img src="%s" id="%s_image_tag">' % (
-                        self.thumbnail_generator(name=name, image=value),
+                        get_or_create_thumbnail(name=name, image=value),
                         new_attrs['id'],
                         )
 
