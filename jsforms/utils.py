@@ -12,11 +12,14 @@ JSFORMS_THUMBNAIL_SIZE = getattr(settings, 'JSFORMS_THUMBNAIL_SIZE', (45,45))
 try:
     import Image as PIL
 except ImportError:
-    PIL = None
     try:
-        if settings.JSFORMS_IMAGEUPLOAD_FEATURE:
-            raise Exception("jsforms did not find PIL. Either turn off the Image Upload Feature or install PIL.")
-    except AttributeError: pass
+        import PIL
+    except ImportError:
+        PIL = None
+        try:
+            if settings.JSFORMS_IMAGEUPLOAD_FEATURE:
+                raise Exception("jsforms did not find PIL. Either turn off the Image Upload Feature or install PIL.")
+        except AttributeError: pass
 
 
 def upload_to(instance, fullpath):
