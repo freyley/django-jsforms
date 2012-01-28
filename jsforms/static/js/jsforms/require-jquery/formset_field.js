@@ -57,7 +57,7 @@ define([], function() {
 
 
     var delete_form = function(form, data) {
-        console.log("delete", form, data);
+        log("delete", form, data);
         var index = $.inArray(form, data.forms);
         var id_field = form.find("#id_jsforms-" + data.name + "-" + index + "-id");
 
@@ -82,7 +82,7 @@ define([], function() {
 
 
     var set_up_form_events = function(form, data) {
-        console.log("setting up form", form);
+        log("setting up form", form);
         var link = $('<a href="#" class="jsforms-formsetfield-delete">delete</a>');
         form.find("label[for$='DELETE']").hide();
         form.find("*[id$='DELETE']").hide().after(link);
@@ -98,5 +98,18 @@ define([], function() {
             set_up_formsetfield(fsft);
         });
     });
+
+    // helper fn for console logging
+    function log() {
+        if (!$.fn.ajaxSubmit.debug) 
+            return;
+        var msg = '[jquery.form] ' + Array.prototype.join.call(arguments,'');
+        if (window.console && window.console.log) {
+            window.console.log(msg);
+        }
+        else if (window.opera && window.opera.postError) {
+            window.opera.postError(msg);
+        }
+    };
 
 });

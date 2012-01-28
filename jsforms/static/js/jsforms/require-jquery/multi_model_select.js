@@ -7,7 +7,7 @@ function source_override (itemlist, request, response) {
     var exclude = itemlist.item_ids(),
         term = request.term;
 
-    console.log("searching", { term: term, exclude: exclude });
+    log("searching", { term: term, exclude: exclude });
 
     $.ajax({
         url: itemlist.url,
@@ -26,8 +26,7 @@ function delete_item(itemlist, delete_link) {
 
 
 function render_list(itemlist) {
-    console.group("render_list");
-    console.log(itemlist.list_item_tmpl_id);
+    log(itemlist.list_item_tmpl_id);
 
     var html = "",
         ids = "";
@@ -40,7 +39,6 @@ function render_list(itemlist) {
     itemlist.display_list.html(html);
     itemlist.hidden_input.val(ids.substring(0, ids.length-1));
 
-    console.groupEnd();
 };
 
 
@@ -77,8 +75,6 @@ function jqueryui_autocomplete(itemlist) {
 
 
 var Itemlist = function(_, input) {
-    console.group("new_autocomplete");
-
     // helpers
     input = $(input);
     var id = input.data("target_id");
@@ -97,10 +93,10 @@ var Itemlist = function(_, input) {
 
     // Functions
     that.add_item_to_list = function(item) {
-        console.log("adding", item);
+        log("adding", item);
         that.items[item.id] = item;
         that.render_list();
-        console.log("items", that.items);
+        log("items", that.items);
     };
 
     that.render_list = function() {
@@ -140,7 +136,6 @@ var Itemlist = function(_, input) {
         that.render_list();
     }
 
-    console.groupEnd();
 };
 
 
@@ -167,6 +162,18 @@ $(function() {
     $.each($(".jsforms-multiselect"), Itemlist);
 });
 
+// helper fn for console logging
+function log() {
+	if (!$.fn.ajaxSubmit.debug) 
+		return;
+	var msg = '[jquery.form] ' + Array.prototype.join.call(arguments,'');
+	if (window.console && window.console.log) {
+		window.console.log(msg);
+	}
+	else if (window.opera && window.opera.postError) {
+		window.opera.postError(msg);
+	}
+};
 
 return {};
 
