@@ -35,4 +35,3 @@ def image_upload(request):
                 success = True,
                 thumbnail_url = tf.get_thumb_url())
     return dict( success = False, errors = form.errors)
-
