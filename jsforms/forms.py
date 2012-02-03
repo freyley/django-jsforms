@@ -14,7 +14,7 @@ class BoundField(django_BoundField):
 
 class ModelForm(forms.ModelForm):
     bound_field_class = BoundField
-    
+
     def __iter__(self):
         for name, field in self.fields.items():
             yield self.bound_field_class(self, field, name)
@@ -113,7 +113,7 @@ class ModelForm(forms.ModelForm):
             field.prepare_to_be_cleaned(name, self.data)
 
         super(ModelForm, self).full_clean(*args, **kwargs)
-    
+
 
     @transaction.commit_manually
     def save(self, *args, **kwargs):
@@ -136,7 +136,7 @@ class ModelForm(forms.ModelForm):
             def save_forms():
                 for field_name, formlist in formsavers_formlists.items():
 
-                    try: 
+                    try:
                         model_field = self.fields[field_name].save_to
                     except AttributeError:
                         model_field = field_name
@@ -175,11 +175,16 @@ class ModelForm(forms.ModelForm):
         except Exception, e:
             transaction.rollback()
             raise e
-        
+
+
 class SearchForm(forms.Form):
     term = forms.CharField()
 
 
 class TemporaryUploadedImageForm(forms.ModelForm):
+
     class Meta:
         model = models.TemporaryUploadedImage
+
+    def save(self, *args, **kwargs):
+        return super(TemporaryUploadedImageForm, self).save(*args, **kwargs)
