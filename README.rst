@@ -35,5 +35,5 @@ INSTALLED_APPS = [
 
 
 ---- install django-staticfiles ----
-make sure django.comtrib.staticfiles
+make sure django.contrib.staticfiles
 
