@@ -28,6 +28,7 @@ setup(
     #test_suite='tests.runtests.runtests',
     package_data={
         'jsforms': [
+            'static/js/jsforms/*/*.js',
             'static/jsforms/js/*.js',
             '*.py',
         ]
