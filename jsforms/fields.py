@@ -100,6 +100,7 @@ class ThumbnailImageField(forms.Field):
         self.field_name = field_name
 
     def clean(self, value, initial=None):
+        self.temporary_instance = None
         try:
             tmp = TemporaryUploadedImage.objects.get(id=value)
             self.temporary_instance = tmp
