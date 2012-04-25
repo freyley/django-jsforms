@@ -102,6 +102,7 @@ class ThumbnailImageField(forms.Field):
     def clean(self, value, initial=None):
         try:
             tmp = TemporaryUploadedImage.objects.get(id=value)
+            self.temporary_instance = tmp
             return tmp.timage.file
         except ValueError:
             try:
