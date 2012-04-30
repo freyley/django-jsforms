@@ -10,20 +10,23 @@ JSFORMS_THUMBNAIL_SIZE = getattr(settings, 'JSFORMS_THUMBNAIL_SIZE', (45,45))
 def PIL_1():
     import Image as PIL
     PIL.open
+    return PIL
 
 def PIL_2():
     import PIL
     PIL.open
+    return PIL
 
 def PIL_3():
     from PIL import Image as PIL
     PIL.open
+    return PIL
 
 PIL = None
 for pil_getter in [PIL_1, PIL_2, PIL_3]:
     error = False
     try:
-        pil_getter()
+        PIL = pil_getter()
     except ImportError: error = True
     except AttributeError: error = True
     if not error and PIL:
