@@ -7,19 +7,30 @@ import datetime
 
 JSFORMS_THUMBNAIL_SIZE = getattr(settings, 'JSFORMS_THUMBNAIL_SIZE', (45,45))
 
-
-# imports PIL with error handling
-try:
+def PIL_1():
     import Image as PIL
-except ImportError:
+    PIL.open
+
+def PIL_2():
+    import PIL
+    PIL.open
+
+def PIL_3():
+    from PIL import Image as PIL
+    PIL.open
+
+PIL = None
+for pil_getter in [PIL_1, PIL_2, PIL_3 ]:
     try:
-        import PIL
-    except ImportError:
-        PIL = None
-        try:
-            if settings.JSFORMS_IMAGEUPLOAD_FEATURE:
-                raise Exception("jsforms did not find PIL. Either turn off the Image Upload Feature or install PIL.")
-        except AttributeError: pass
+        pil_getter()
+    except ImportError: pass
+    except AttributeError: pass
+
+if not PIL:
+    try:
+        if settings.JSFORMS_IMAGEUPLOAD_FEATURE:
+            raise Exception("jsforms did not find PIL. Either turn off the Image Upload Feature or install PIL.")
+    except AttributeError: pass
 
 
 def upload_to(instance, fullpath):
