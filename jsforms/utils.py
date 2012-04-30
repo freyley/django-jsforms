@@ -20,11 +20,15 @@ def PIL_3():
     PIL.open
 
 PIL = None
-for pil_getter in [PIL_1, PIL_2, PIL_3 ]:
+for pil_getter in [PIL_1, PIL_2, PIL_3]:
+    error = False
     try:
         pil_getter()
-    except ImportError: pass
-    except AttributeError: pass
+    except ImportError: error = True
+    except AttributeError: error = True
+    if not error and PIL:
+        break
+    PIL = None
 
 if not PIL:
     try:
