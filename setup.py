@@ -31,6 +31,7 @@ setup(
             'static/js/jsforms/*/*.js',
             'static/jsforms/js/*.js',
             '*.py',
+            'migrations/*.py',
         ]
     },
 )
