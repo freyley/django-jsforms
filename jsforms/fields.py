@@ -18,7 +18,8 @@ class SingleModelField(forms.ModelChoiceField):
             kwargs["widget"] = SingleModelSelect(self.model)
         kwargs["queryset"] = self.model.objects.all()
         super(SingleModelField, self).__init__(*args, **kwargs)
-
+    def prepare_to_be_cleaned(self, *args, **kwargs):
+        pass
 
 class MultiModelField(forms.ModelMultipleChoiceField):
     _is_jsforms_field = True
@@ -42,6 +43,10 @@ class MultiModelField(forms.ModelMultipleChoiceField):
     def clean(self, value):
         ids = self.to_python(value)
         return idlist_to_models(ids, self.model)
+
+    def prepare_to_be_cleaned(self, *args, **kwargs):
+        pass
+
 
 
 class FormsetField(forms.Field):
