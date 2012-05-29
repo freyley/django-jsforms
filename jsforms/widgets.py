@@ -202,12 +202,12 @@ class ThumbnailImage(forms.TextInput):
                 id = int(value)
                 tmp_img = TemporaryUploadedImage.objects.get(id=id)
                 image_tag = '<img src="%s" id="%s_image_tag">' % (
-                        get_or_create_thumbnail(name=name, image=tmp_img.timage),
+                        get_or_create_thumbnail(name=name, image=tmp_img.timage)['thumbnail'],
                         new_attrs['id'],
                         )
             except (ValueError, TypeError):
                 image_tag = '<img src="%s" id="%s_image_tag">' % (
-                        get_or_create_thumbnail(name=name, image=value),
+                        get_or_create_thumbnail(name=name, image=value)['thumbnail'],
                         new_attrs['id'],
                         )
 

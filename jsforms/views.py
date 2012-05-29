@@ -30,8 +30,11 @@ def image_upload(request):
     form = TemporaryUploadedImageForm(request.POST, request.FILES)
     if form.is_valid():
         tf = form.save()
-        return dict(
+        return_dict = dict(
                 id = tf.id,
                 success = True,
                 thumbnail_url = tf.get_thumb_url())
+        for name, url in tf.all_othersize_urls.items():
+            return_dict['tn_'+name+'_url'] = url
+        return return_dict
     return dict( success = False, errors = form.errors)
